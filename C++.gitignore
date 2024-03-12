@@ -33,3 +33,4 @@
 
 # Everything in Build directory
 build/*
+!build/.gitkeep 
