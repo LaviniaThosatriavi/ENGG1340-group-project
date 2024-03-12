@@ -13,6 +13,9 @@ git pull
 git add -A
 # add files to commit
 
+git status
+# to see which file are modified/created
+
 git commit -m "<short summary of what you did>"
 # write a short message, usually starting with fix: (fix bug), feat: (feature), etc.
 
