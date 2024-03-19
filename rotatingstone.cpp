@@ -5,6 +5,11 @@ using namespace std;
 
 const int row = 5;
 const int col = 5;
+const string red = "\033[1;41m";
+const string green = "\033[1;42m";
+const string yellow = "\033[1;43m";
+const string blue = "\033[1;44m";
+const string reset = "\033[0m";
 int arr[row][col];
 int monsterHealth = 90;
 const int monsterMaxHealth = 100;
@@ -57,13 +62,13 @@ void print_board(){
     for (int i = 0; i < row; i++) {
         for (int j = 0; j < col; j++) {
             if (arr[i][j] == 1) {
-                cout << "\033[1;41m" << " " << "\033[0m ";
+                cout << red << " " << reset << " ";
             } else if (arr[i][j] == 2) {
-                cout << "\033[1;42m" << " " << "\033[0m ";
+                cout << green << " " << reset << " ";
             } else if (arr[i][j] == 3) {
-                cout << "\033[1;43m" << " "<< "\033[0m ";
+                cout << yellow << " " << reset << " ";
             } else if (arr[i][j] == 4) {
-                cout << "\033[1;44m" << " " << "\033[0m ";
+                cout << blue << " " << reset << " ";
             }
         }
         cout << endl;
