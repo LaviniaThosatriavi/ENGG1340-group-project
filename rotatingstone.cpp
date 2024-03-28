@@ -1,6 +1,7 @@
 #include <iostream>
 #include <time.h>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -26,23 +27,87 @@ void create_board(){// tracy
             arr[i][j] = 1 + (rand() % 4);
 }
 
-void prompt_user_move(){ //henry
-    // get the user move and feed into move stones 
+char prompt_user_move(vector<int> stone_position, int row, int col) {
+    char move;
+    int current_stone_column = stone_position[0];
+    int current_stone_row = stone_position[1];
+    vector<char> valid_move;
+    valid_move.push_back('w');
+    valid_move.push_back('a');
+    valid_move.push_back('s');
+    valid_move.push_back('d');
+    cout << "Please select a move using 'w', 'a', 's', or 'd': ";
+    cin >> move;
+
+    // Check if the move is valid
+    while (find(valid_move.begin(), valid_move.end(), move) == valid_move.end()) {
+        cout << "Invalid move. Please choose a move using 'w', 'a', 's', or 'd': ";
+        cin >> move;
+    }
+
+    // Check if the move is within range
+    while (true) {
+        // Break out of the loop when the move is valid and within range
+        if ((move == 'w' && current_stone_row - 1 >= 0) ||
+             (move == 'a' && current_stone_column - 1 >=0) ||
+             (move == 's' && current_stone_row + 1 < row) ||
+             (move == 'd' && current_stone_column + 1 < col)) {
+            break;
+        }
+        else{
+            cout << "Move out of range. Please choose another move: ";
+            cin >> move;
+        }
+    }
+
+    return move;
 }
+
+
+
+vector<int> prompt_stone_position(int board_row,int board_col){ //henry
+
+    int row;
+    int column;
+    vector<int> position;
+    // 2 do while loop to check whether the selected posiiton is on the board 
+    do {
+        cout<<"please select the column of the stone which you would like to connect from";
+        cin>>column;}
+
+    while(column>=board_col||column<0);
+
+    position.push_back(column);
+
+    do {
+        cout<<"please select the row of the stone which you would like to connect from";
+        cin>>row;}
+    while(row>=board_row||row<0);
+
+    position.push_back(row);
+
+
+    // index 0 is column , index 1 is row 
+    return position ;
+}
+
 
 void move_stones(char move,int s_row,int s_col){
     //this function basically move the stone according to the user selected move and selected stone
     //input : move(wasd) , s_row(starting row ),s_col(starting column)
     //output: update the board base on the user movement 
 
-
     int start_stone= arr[s_row][s_col];// this is the starting stone being selected to connect
     int current_stone=start_stone; // this is to keep track of the current stone being connected
     int c_row=s_row;// the current row is the starting row
     int c_col=s_col;// the current column is the strating column
+    int number_of_connections=0;
+    vector <vector<int> > connection_history;
+    connection_history[number_of_connections][0]=s_col;// set the initial connection as the starting posiiton
+    connection_history[number_of_connections][1]=s_row;
+    
 
     while(true){
-        // check out of range 
         if (move=='w'){//when stone is connected upward
             //later need to add whether the move is valid 
             int next_stone = arr[c_row-1][c_col];// get the stone to be connected with
@@ -64,7 +129,6 @@ void move_stones(char move,int s_row,int s_col){
             }
         
         }
-
         else if (move=='s'){// when stone being moved to downward
             int next_stone = arr[c_row+1][c_col];// get the stone to be connected with
             if (next_stone==current_stone){// check whether the 2 are the same type 
@@ -74,7 +138,6 @@ void move_stones(char move,int s_row,int s_col){
                 break ;// if the stones are not the same type break out of the loop 
             }
         }
-
         else if (move =='d'){// when stone being mooved to right 
             int next_stone = arr[c_row][c_col+1];// get the stone to be connected with
             if (next_stone==current_stone){// check whether the 2 are the same type 
@@ -84,14 +147,11 @@ void move_stones(char move,int s_row,int s_col){
                 break ;// if the stones are not the same type break out of the loop 
             }
         }
+    number_of_connections+=1;
+    connection_history[number_of_connections][0]=c_col;// appending the position of the connection 
+    connection_history[number_of_connections][1]=c_row;
 
-        else{
-            cout<<"move not valid";
-        }
-        
-        // return a vector for the print board function 
-        // update board 
-        // print the board out 
+    // print the board out , the connection will be passed into the print board function
     }
 }
 
@@ -132,7 +192,10 @@ vector<int> calculate_score_for_each_stone(int stoneType, int numStones){
             cout << "Invalid stone type." << endl;
             break;
     }
-    return {stoneType, score};
+    vector<int> result(2);
+    result[0] = stoneType;
+    result[1] = score;
+    return result;
 }
 
 void execute_stone_actions(vector<int> stone) {
@@ -142,6 +205,7 @@ void execute_stone_actions(vector<int> stone) {
     }
     int stoneType = stone[0];
     int score = stone[1];
+    int attack = score + nextAttack;
     switch (stoneType) {
         case 1:
             // Stone type 1: Refill health bar
@@ -157,7 +221,6 @@ void execute_stone_actions(vector<int> stone) {
 
         case 3:
             // Stone type 3: Normal attack
-            int attack = score + nextAttack;
             cout << "You damaged the monster with attack " << attack << endl;
             monsterHealth -= attack;
             nextAttack = 0;
@@ -211,10 +274,10 @@ void print_player_health_bar(){
     cout << "]" << endl;
 }
 
-void print_board(vector<vector<int>>& connectedStones){
+void print_board(){
 
-    vector<int> start = connectedStones[0];
-    vector<int> next = connectedStones[1];
+    // vector<int> start = connectedStones[0];
+    // vector<int> next = connectedStones[1];
 
     for (int i = 0; i < row; i++) {
         for (int j = 0; j < col; j++) {
@@ -237,8 +300,7 @@ int main() {
     print_monster();
     print_monster_health_bar();
     create_board();
-    vector<vector<int>> connectedStones = {{1,2},{1,3}};
-    print_board(connectedStones);
+    print_board();
     print_player_health_bar();
     return 0;
 }
