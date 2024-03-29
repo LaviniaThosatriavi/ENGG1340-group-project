@@ -1,0 +1,19 @@
+CC = g++
+CFLAGS = -std=c++11 -Wall
+
+TARGET = rs
+SOURCES = rotatingstone.cpp
+OBJECTS = $(SOURCES:.cpp=.o)
+
+.PHONY: all clean
+
+all: $(TARGET)
+
+$(TARGET): $(OBJECTS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJECTS)
+
+.cpp.o:
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm -f $(OBJECTS) $(TARGET)

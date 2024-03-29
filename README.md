@@ -25,8 +25,7 @@ git push
 
 ## Run File
 ``` bash
-mkdir build
-g++ -Wall hello.cpp -o build/hello
-# go to build directory
-./hello
+make
+./rs
+make clean
 ```
