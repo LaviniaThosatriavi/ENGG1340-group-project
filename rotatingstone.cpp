@@ -7,11 +7,12 @@ using namespace std;
 
 const int row = 5;
 const int col = 5;
-const string red = "\033[1;41m";
-const string green = "\033[1;42m";
-const string yellow = "\033[1;43m";
-const string blue = "\033[1;44m";
-const string reset = "\033[0m";
+const string bred = "\033[1;41m"; // background red
+const string bgreen = "\033[1;42m"; // background green
+const string byellow = "\033[1;43m"; // background yellow
+const string bblue = "\033[1;44m"; // background blue
+const string fblack = "\033[30m"; // foreground magenta
+const string reset = "\033[0m"; // reset color
 int arr[row][col];
 int monsterHealth = 90;
 const int monsterMaxHealth = 100;
@@ -274,21 +275,56 @@ void print_player_health_bar(){
     cout << "]" << endl;
 }
 
-void print_board(){
+bool isVectorInVector(const vector<vector<int> >& outer, const vector<int>& target) {
+    for (size_t i = 0; i < outer.size(); i++) {
+        if (outer[i] == target) {
+            return true;
+        }
+    }
+    return false;
+}
 
-    // vector<int> start = connectedStones[0];
-    // vector<int> next = connectedStones[1];
-
+void print_board(vector <vector<int> > connectedStones){
+    // * = current stone
+    // • = connected stone
     for (int i = 0; i < row; i++) {
         for (int j = 0; j < col; j++) {
+            vector<int> temp(2);
+            temp[0] = i;
+            temp[1] = j;
+            bool t = isVectorInVector(connectedStones, temp);
             if (arr[i][j] == 1) {
-                cout << red << " " << reset << " ";
+                if (connectedStones.back() == temp) {
+                    cout << bred << fblack << "*" << reset << " ";
+                } else if (t){
+                    cout << bred << fblack << "•" << reset << " ";
+                } else {
+                    cout << bred << " " << reset << " ";
+                }
             } else if (arr[i][j] == 2) {
-                cout << green << " " << reset << " ";
+                if (connectedStones.back() == temp) {
+                    cout << bgreen << fblack << "*" << reset << " ";
+                } else if (t){
+                    cout << bgreen << fblack << "•" << reset << " ";
+                } else {
+                    cout << bgreen << " " << reset << " ";
+                }
             } else if (arr[i][j] == 3) {
-                cout << yellow << " " << reset << " ";
+                if (connectedStones.back() == temp) {
+                    cout << byellow << fblack << "*" << reset << " ";
+                } else if (t){
+                    cout << byellow << fblack << "•" << reset << " ";
+                } else {
+                    cout << byellow << " " << reset << " ";
+                }
             } else if (arr[i][j] == 4) {
-                cout << blue << " " << reset << " ";
+                if (connectedStones.back() == temp) {
+                    cout << bblue << fblack << "*" << reset << " ";
+                } else if (t){
+                    cout << bblue << fblack << "•" << reset << " ";
+                } else {
+                    cout << bblue << " " << reset << " ";
+                }
             }
         }
         cout << endl;
@@ -300,7 +336,18 @@ int main() {
     print_monster();
     print_monster_health_bar();
     create_board();
-    print_board();
+    vector <vector<int> > connectedStones;
+    vector<int> temp(2);
+    temp[0] = 1;
+    temp[1] = 2;
+    connectedStones.push_back(temp);
+    temp[0] = 2;
+    temp[1] = 2;
+    connectedStones.push_back(temp);
+    temp[0] = 1;
+    temp[1] = 3;
+    connectedStones.push_back(temp);
+    print_board(connectedStones);
     print_player_health_bar();
     return 0;
 }
