@@ -28,6 +28,16 @@ void create_board(){// tracy
             arr[i][j] = 1 + (rand() % 4);
 }
 
+
+bool isVectorInVector(const vector<vector<int> >& outer, const vector<int>& target) {
+    for (size_t i = 0; i < outer.size(); i++) {
+        if (outer[i] == target) {
+            return true;
+        }
+    }
+    return false;
+}
+
 char prompt_user_move(vector<int> stone_position, int row, int col) {
     char move;
     int current_stone_column = stone_position[0];
@@ -283,15 +293,6 @@ void print_player_health_bar(){
         cout << "-";
     }
     cout << "]" << endl;
-}
-
-bool isVectorInVector(const vector<vector<int> >& outer, const vector<int>& target) {
-    for (size_t i = 0; i < outer.size(); i++) {
-        if (outer[i] == target) {
-            return true;
-        }
-    }
-    return false;
 }
 
 void print_board(vector <vector<int> > connectedStones){
