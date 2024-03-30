@@ -157,8 +157,18 @@ void move_stones(char move,int s_row,int s_col){
 }
 
 
-void remove_stones_after_connection(){
-
+void remove_stones_after_connection(vector<vector<int> > connectedStones){
+    // replace stone to 0
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < col; j++) {
+            vector<int> temp(2);
+            temp[0] = i;
+            temp[1] = j;
+            if (isVectorInVector(connectedStones, temp)) {
+                arr[i][j] = 0;
+            }
+        }
+    }
 }
 
 void regenearte_stones(){
