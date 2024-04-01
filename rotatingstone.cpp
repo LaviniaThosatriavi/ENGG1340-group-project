@@ -2,6 +2,7 @@
 #include <time.h>
 #include <vector>
 #include <algorithm>
+#include <fstream>
 
 using namespace std;
 
@@ -13,7 +14,7 @@ const string byellow = "\033[1;43m"; // background yellow
 const string bblue = "\033[1;44m"; // background blue
 const string fblack = "\033[30m"; // foreground magenta
 const string reset = "\033[0m"; // reset color
-int arr[row][col];
+int arr[row][col];// it is the board 
 int monsterHealth = 90;
 const int monsterMaxHealth = 100;
 int playerHealth = 100;
@@ -21,15 +22,13 @@ const int playerMaxHealth = 100;
 int nextAttack = 0;
 bool monsterAttack = true;
 
-void create_board(){// tracy 
-    srand(time(0));
-    for (int i=0; i< row; i++)
-        for (int j=0; j< col; j++)
-            arr[i][j] = 1 + (rand() % 4);
-}
-
-
-bool isVectorInVector(const vector<vector<int> >& outer, const vector<int>& target) {
+struct gamestatus// a structure used to save all the game status 
+{
+    int MonsterH;
+    int PlayerH;
+    int board[row][col];
+};
+bool isVectorInVector(const vector<vector<int> >& outer, const vector<int>& target) {// check whther the current stone is in the connected stone history 
     for (size_t i = 0; i < outer.size(); i++) {
         if (outer[i] == target) {
             return true;
@@ -38,7 +37,116 @@ bool isVectorInVector(const vector<vector<int> >& outer, const vector<int>& targ
     return false;
 }
 
+void print_board(vector <vector<int> > connectedStones){// connected stones are the list in a list , connection history 
+    // * = current stone
+    // • = connected stone
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < col; j++) {
+            vector<int> temp(2);
+            temp[0] = j;
+            temp[1] = i;
+            bool t = isVectorInVector(connectedStones, temp);
+            if (arr[i][j] == 1) {// arr is the board , if the stone type is 1 just check whether the stones are in the connection history.
+                if (connectedStones.back() == temp) {
+                    cout << bred << fblack << "*" << reset << " ";
+                } else if (t){
+                    cout << bred << fblack << "•" << reset << " ";
+                } else {
+                    cout << bred << " " << reset << " ";
+                }
+            } else if (arr[i][j] == 2) {
+                if (connectedStones.back() == temp) {
+                    cout << bgreen << fblack << "*" << reset << " ";
+                } else if (t){
+                    cout << bgreen << fblack << "•" << reset << " ";
+                } else {
+                    cout << bgreen << " " << reset << " ";
+                }
+            } else if (arr[i][j] == 3) {
+                if (connectedStones.back() == temp) {
+                    cout << byellow << fblack << "*" << reset << " ";
+                } else if (t){
+                    cout << byellow << fblack << "•" << reset << " ";
+                } else {
+                    cout << byellow << " " << reset << " ";
+                }
+            } else if (arr[i][j] == 4) {
+                if (connectedStones.back() == temp) {
+                    cout << bblue << fblack << "*" << reset << " ";
+                } else if (t){
+                    cout << bblue << fblack << "•" << reset << " ";
+                } else {
+                    cout << bblue << " " << reset << " ";
+                }
+            }
+        }
+        cout << endl;
+        cout << endl;
+    }
+}
+
+
+void writeStructToFile(const gamestatus& data, const std::string& filename) {
+    // Open the file in binary mode for writing
+    ofstream fout(filename, std::ios::binary);
+    if (fout) {
+        // Write the binary representation of the structure to the file
+        fout.write(reinterpret_cast<const char*>(&data), sizeof(gamestatus));
+        fout.close();
+        cout << "Structure data written to file." << endl;
+    } else {
+        cout << "Failed to open file for writing." << endl;
+    }
+}
+
+// Function to read structure data from a file
+gamestatus readStructFromFile(const std::string& filename, int default_ph, int default_mh,int default_b[row][col]) {
+    gamestatus data;
+    data.PlayerH=default_ph;// set the default value of the player health 
+    data.MonsterH=default_mh;// set the default value of the monster heatlth 
+    for(int i=0;i<row;i++){// set the default value of the board 
+        for (int j=0;j<col;j++){
+            data.board[i][j]=default_b[i][j];
+        }
+    }
+    // Open the file in binary mode for reading
+    ifstream fin(filename, ios::binary);
+    if (fin) {
+        // Read the binary data from the file into the structure
+        fin.read(reinterpret_cast<char*>(&data), sizeof(gamestatus));
+        fin.close();
+        cout << "Structure data read from file." << endl;
+    } else {
+        // we create a file for them 
+        ofstream file(filename);
+        cout <<"we have created a file for you name" <<filename<< endl;
+    }
+    return data;
+}
+
+
+// to change the value of player health , monster health and board content to the values from last game status 
+void updatestatus(int& player_health,int& monster_health,gamestatus update){
+    // input : player_health , monster_health and data from last game status, all pass by refernece so the values are modified 
+    // process: to update the values of player health , monter health and the board position , importing data from the last game 
+    player_health= update.PlayerH;
+    monster_health= update.MonsterH;
+    for(int i=0;i<row;i++){
+        for (int j=0;j<col;j++){
+            arr[i][j]=update.board[i][j];
+        }
+    }
+}
+
+void create_board(){// tracy 
+    srand(time(0));
+    for (int i=0; i< row; i++)
+        for (int j=0; j< col; j++)
+            arr[i][j] = 1 + (rand() % 4);
+}
+
 char prompt_user_move(vector<int> stone_position, int row, int col) {
+    // get the user move from this function , it will perform checks of whthe the move is valid 
     char move;
     int current_stone_column = stone_position[0];
     int current_stone_row = stone_position[1];
@@ -77,7 +185,7 @@ char prompt_user_move(vector<int> stone_position, int row, int col) {
 
 
 vector<int> prompt_stone_position(int board_row,int board_col){ //henry
-
+    // it ask for the position of the stone to start with 
     int row;
     int column;
     vector<int> position;
@@ -103,10 +211,10 @@ vector<int> prompt_stone_position(int board_row,int board_col){ //henry
 }
 
 
-void move_stones(char move,int s_row,int s_col){
-    //this function basically move the stone according to the user selected move and selected stone
-    //input : move(wasd) , s_row(starting row ),s_col(starting column)
-    //output: update the board base on the user movement 
+int move_stones(int s_row,int s_col){
+    //this function basically connect the stone according to the user selected move and selected stone
+    //input : s_row(starting row ),s_col(starting column)
+    //output: the number of successfuk connections 
 
     int start_stone= arr[s_row][s_col];// this is the starting stone being selected to connect
     int current_stone=start_stone; // this is to keep track of the current stone being connected
@@ -114,13 +222,19 @@ void move_stones(char move,int s_row,int s_col){
     int c_col=s_col;// the current column is the strating column
     int number_of_connections=0;
     vector <vector<int> > connection_history;
-    connection_history[number_of_connections][0]=s_col;// set the initial connection as the starting posiiton
-    connection_history[number_of_connections][1]=s_row;
-    
+    vector <int> temp(2);
+    temp[0]=s_col;// set the initial connection as the starting posiiton
+    temp[1]=s_row;
+    connection_history.push_back(temp);
+    cout<<"before entering while loop ";
 
     while(true){
+        vector<int> stone_position={c_col,c_row};
+        cout<<"testing";
+        char move = prompt_user_move(stone_position,row,col);// prompt the user for the move
+        cout<<"test prompt user move";
+
         if (move=='w'){//when stone is connected upward
-            //later need to add whether the move is valid 
             int next_stone = arr[c_row-1][c_col];// get the stone to be connected with
             if (next_stone==current_stone){// check whether the 2 are the same type 
                 c_row=c_row-1;
@@ -163,25 +277,19 @@ void move_stones(char move,int s_row,int s_col){
     connection_history[number_of_connections][1]=c_row;
 
     // print the board out , the connection will be passed into the print board function
+    //print_board(connection_history);
+    print_board(connection_history);
     }
+    return number_of_connections;
 }
 
 
-void remove_stones_after_connection(vector<vector<int> > connectedStones){
-    // replace stone to 0
-    for (int i = 0; i < row; i++) {
-        for (int j = 0; j < col; j++) {
-            vector<int> temp(2);
-            temp[0] = i;
-            temp[1] = j;
-            if (isVectorInVector(connectedStones, temp)) {
-                arr[i][j] = 0;
-            }
-        }
-    }
+void remove_stones_after_connection(){// replace the connected stones with zero 
+
 }
 
-void regenearte_stones(){
+
+void regenearte_stones(){// animation 
 
 }
 
@@ -248,7 +356,7 @@ void execute_stone_actions(vector<int> stone) {
             break;
         
         case 4:
-            // Stone type 4: 
+            // Stone type 4: increasing attack 
             cout << "Increasing the next attack by " << score << endl;
             nextAttack += score;
             break;
@@ -294,71 +402,87 @@ void print_player_health_bar(){
     }
     cout << "]" << endl;
 }
-
-void print_board(vector <vector<int> > connectedStones){
-    // * = current stone
-    // • = connected stone
-    for (int i = 0; i < row; i++) {
-        for (int j = 0; j < col; j++) {
-            vector<int> temp(2);
-            temp[0] = i;
-            temp[1] = j;
-            bool t = isVectorInVector(connectedStones, temp);
-            if (arr[i][j] == 1) {
-                if (connectedStones.back() == temp) {
-                    cout << bred << fblack << "*" << reset << " ";
-                } else if (t){
-                    cout << bred << fblack << "•" << reset << " ";
-                } else {
-                    cout << bred << " " << reset << " ";
-                }
-            } else if (arr[i][j] == 2) {
-                if (connectedStones.back() == temp) {
-                    cout << bgreen << fblack << "*" << reset << " ";
-                } else if (t){
-                    cout << bgreen << fblack << "•" << reset << " ";
-                } else {
-                    cout << bgreen << " " << reset << " ";
-                }
-            } else if (arr[i][j] == 3) {
-                if (connectedStones.back() == temp) {
-                    cout << byellow << fblack << "*" << reset << " ";
-                } else if (t){
-                    cout << byellow << fblack << "•" << reset << " ";
-                } else {
-                    cout << byellow << " " << reset << " ";
-                }
-            } else if (arr[i][j] == 4) {
-                if (connectedStones.back() == temp) {
-                    cout << bblue << fblack << "*" << reset << " ";
-                } else if (t){
-                    cout << bblue << fblack << "•" << reset << " ";
-                } else {
-                    cout << bblue << " " << reset << " ";
-                }
-            }
-        }
-        cout << endl;
-        cout << endl;
-    }
+void print_instructions(){
+    cout<<"the game works like this"<<"\n";
 }
 
-int main() {
-    print_monster();
-    print_monster_health_bar();
+// function to check whether the game has ended
+bool game_ended(int player_health , int monster_health){
+    // the game ends when either player health or monster health goes to zero 
+    if (player_health<=0){
+        cout << "unlucky you have lost the game "<<"\n";
+        return true;
+    }
+    else if (monster_health<=0){
+        cout<<"congrafulation you have won the game "<<"\n";
+        return true;
+    }
+    return false;
+    
+}
+
+
+
+
+
+int main() {// integration 
+    int default_ph=100;
+    int default_mh=100;
     create_board();
-    vector <vector<int> > connectedStones;
-    vector<int> temp(2);
-    temp[0] = 1;
-    temp[1] = 2;
-    connectedStones.push_back(temp);
-    temp[0] = 2;
-    temp[1] = 2;
-    connectedStones.push_back(temp);
-    temp[0] = 1;
-    temp[1] = 3;
-    connectedStones.push_back(temp);
-    print_board(connectedStones);
-    print_player_health_bar();
-    return 0;
+    string status_file="gamestatus.txt";
+    gamestatus last_game_status = readStructFromFile(status_file,default_ph,default_mh,arr);
+    updatestatus(playerHealth,monsterHealth,last_game_status);// to update the current player health and monster health and board 
+    // first read from the file to get the data from the last game 
+    // Second we update the value of the player health , monster health and board from the last game
+    while(true){
+        print_instructions();
+        
+        vector<int>stone_position= prompt_stone_position(row,col);// get the user selected stone position 
+        cout<<"testing prompt stone no problem"<<"\n";
+        int stone_type= arr[stone_position[1]][stone_position[0]];// determine the stone type 
+        cout<<"test stone type"<<"\n";
+
+        int connections=move_stones(stone_position[1],stone_position[0]);// going to continue prompting user for the move until a stone which is not the same type is connected 
+        cout<<"testing move stone"<<"\n";
+
+        vector <int> result = calculate_score_for_each_stone(stone_type,connections);// calculatig the score for the connected stones
+        execute_stone_actions(result);// apply the scores to the game scenario
+
+        if (game_ended(playerHealth,monsterHealth)){
+            // check if the game has ended after every connection ;
+            // ask if the player would like to play again 
+            char restart;
+            cout<<"the game has ended would you like to restart press , press y to restart and any key to end "<<"\n";
+            cin>>restart;
+            if (restart=='y'){
+                cout<<"hi";
+            }
+            else{
+                cout<<"bye";
+
+            }
+            gamestatus new_game ;// creating a new game status object 
+            new_game.PlayerH=default_ph;// set the default value of the player health 
+            new_game.MonsterH=default_mh;// set the default value of the monster heatlth 
+            create_board();// regenerate board again
+            for(int i=0;i<row;i++){// set the default value of the board 
+                for (int j=0;j<col;j++){
+                    new_game.board[i][j]=arr[i][j];
+            }
+        }
+            writeStructToFile(new_game,status_file);// storing the content into the file so next time the value are fetched will be the default values 
+            // set the values in the game status.txt back to defualt values so next time when it is fetched can run it 
+        }
+
+
+
+        // add a wanting to quit option and save the game status 
+        // we enter the main game loop 
+        // first we have to print out the instruction to exaplin how to play the game 
+        // print out the board 
+        // ask the player to pick a stone to start with 
+        // ask player to select move 
+        // call the connect stone function , it will then print the board out 
+        // after they finish the game , we reset the game status to the default setting in the game status file 
+    }
 }
