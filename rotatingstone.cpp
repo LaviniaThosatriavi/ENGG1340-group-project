@@ -37,7 +37,7 @@ bool isVectorInVector(const vector<vector<int> >& outer, const vector<int>& targ
     return false;
 }
 
-void print_board(vector <vector<int> > connectedStones){// connected stones are the list in a list , connection history 
+void print_board(vector <vector<int> > connectedStones){
     // * = current stone
     // • = connected stone
     for (int i = 0; i < row; i++) {
@@ -46,8 +46,9 @@ void print_board(vector <vector<int> > connectedStones){// connected stones are 
             temp[0] = j;
             temp[1] = i;
             bool t = isVectorInVector(connectedStones, temp);
-            if (arr[i][j] == 1) {// arr is the board , if the stone type is 1 just check whether the stones are in the connection history.
-                if (connectedStones.back() == temp) {
+            bool empty = connectedStones.empty();
+            if (arr[i][j] == 1) {
+                if (!empty && connectedStones.back() == temp) {
                     cout << bred << fblack << "*" << reset << " ";
                 } else if (t){
                     cout << bred << fblack << "•" << reset << " ";
@@ -55,25 +56,25 @@ void print_board(vector <vector<int> > connectedStones){// connected stones are 
                     cout << bred << " " << reset << " ";
                 }
             } else if (arr[i][j] == 2) {
-                if (connectedStones.back() == temp) {
+                if (!empty && connectedStones.back() == temp) {
                     cout << bgreen << fblack << "*" << reset << " ";
-                } else if (t){
+                } else if (!empty && t){
                     cout << bgreen << fblack << "•" << reset << " ";
                 } else {
                     cout << bgreen << " " << reset << " ";
                 }
             } else if (arr[i][j] == 3) {
-                if (connectedStones.back() == temp) {
+                if (!empty && connectedStones.back() == temp) {
                     cout << byellow << fblack << "*" << reset << " ";
-                } else if (t){
+                } else if (!empty && t){
                     cout << byellow << fblack << "•" << reset << " ";
                 } else {
                     cout << byellow << " " << reset << " ";
                 }
             } else if (arr[i][j] == 4) {
-                if (connectedStones.back() == temp) {
+                if (!empty && connectedStones.back() == temp) {
                     cout << bblue << fblack << "*" << reset << " ";
-                } else if (t){
+                } else if (!empty && t){
                     cout << bblue << fblack << "•" << reset << " ";
                 } else {
                     cout << bblue << " " << reset << " ";
@@ -226,13 +227,10 @@ int move_stones(int s_row,int s_col){
     temp[0]=s_col;// set the initial connection as the starting posiiton
     temp[1]=s_row;
     connection_history.push_back(temp);
-    cout<<"before entering while loop ";
 
     while(true){
         vector<int> stone_position={c_col,c_row};
-        cout<<"testing";
         char move = prompt_user_move(stone_position,row,col);// prompt the user for the move
-        cout<<"test prompt user move";
 
         if (move=='w'){//when stone is connected upward
             int next_stone = arr[c_row-1][c_col];// get the stone to be connected with
@@ -273,8 +271,11 @@ int move_stones(int s_row,int s_col){
             }
         }
     number_of_connections+=1;
-    connection_history[number_of_connections][0]=c_col;// appending the position of the connection 
-    connection_history[number_of_connections][1]=c_row;
+    vector <int> connection(2);
+
+    connection[0]=c_col;// appending the position of the connection 
+    connection[1]=c_row;
+    connection_history.push_back(connection);
 
     // print the board out , the connection will be passed into the print board function
     //print_board(connection_history);
@@ -385,7 +386,8 @@ void print_monster_health_bar(){
     for (int i = filledBarWidth; i < barWidth; i++) {
         cout << "-";
     }
-    cout << "]" << endl;
+    cout << "]" ;
+    cout<<" "<<monsterHealth<<"\n";
 
 }
 
@@ -400,7 +402,8 @@ void print_player_health_bar(){
     for (int i = filledBarWidth; i < barWidth; i++) {
         cout << "-";
     }
-    cout << "]" << endl;
+    cout << "]" ;
+    cout<<" "<<playerHealth<<"\n";
 }
 void print_instructions(){
     cout<<"the game works like this"<<"\n";
@@ -421,6 +424,21 @@ bool game_ended(int player_health , int monster_health){
     
 }
 
+void remove_stones_after_connection(vector<vector<int> > connectedStones){
+    // replace stone to 0
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < col; j++) {
+            vector<int> temp(2);
+            temp[0] = i;
+            temp[1] = j;
+            if (isVectorInVector(connectedStones, temp)) {
+                arr[i][j] = 0;
+            }
+        }
+    }
+}
+
+
 
 
 
@@ -437,6 +455,9 @@ int main() {// integration
     while(true){
         print_instructions();
         
+        vector <vector<int> > connected_stones;
+        print_board(connected_stones);
+
         vector<int>stone_position= prompt_stone_position(row,col);// get the user selected stone position 
         cout<<"testing prompt stone no problem"<<"\n";
         int stone_type= arr[stone_position[1]][stone_position[0]];// determine the stone type 
@@ -444,9 +465,16 @@ int main() {// integration
 
         int connections=move_stones(stone_position[1],stone_position[0]);// going to continue prompting user for the move until a stone which is not the same type is connected 
         cout<<"testing move stone"<<"\n";
+        print_monster();
+        print_monster_health_bar();
+        print_player_health_bar();
+        // print the monster health bar 
+        // print the player health bar 
 
         vector <int> result = calculate_score_for_each_stone(stone_type,connections);// calculatig the score for the connected stones
         execute_stone_actions(result);// apply the scores to the game scenario
+
+        // after this we have to grab the connection history and replace all the stones 
 
         if (game_ended(playerHealth,monsterHealth)){
             // check if the game has ended after every connection ;
