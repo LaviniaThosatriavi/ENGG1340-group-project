@@ -304,8 +304,9 @@ void print_board(vector <vector<int> > connectedStones){
             temp[0] = i;
             temp[1] = j;
             bool t = isVectorInVector(connectedStones, temp);
+            bool empty = connectedStones.empty();
             if (arr[i][j] == 1) {
-                if (connectedStones.back() == temp) {
+                if (!empty && connectedStones.back() == temp) {
                     cout << bred << fblack << "*" << reset << " ";
                 } else if (t){
                     cout << bred << fblack << "•" << reset << " ";
@@ -313,25 +314,25 @@ void print_board(vector <vector<int> > connectedStones){
                     cout << bred << " " << reset << " ";
                 }
             } else if (arr[i][j] == 2) {
-                if (connectedStones.back() == temp) {
+                if (!empty && connectedStones.back() == temp) {
                     cout << bgreen << fblack << "*" << reset << " ";
-                } else if (t){
+                } else if (!empty && t){
                     cout << bgreen << fblack << "•" << reset << " ";
                 } else {
                     cout << bgreen << " " << reset << " ";
                 }
             } else if (arr[i][j] == 3) {
-                if (connectedStones.back() == temp) {
+                if (!empty && connectedStones.back() == temp) {
                     cout << byellow << fblack << "*" << reset << " ";
-                } else if (t){
+                } else if (!empty && t){
                     cout << byellow << fblack << "•" << reset << " ";
                 } else {
                     cout << byellow << " " << reset << " ";
                 }
             } else if (arr[i][j] == 4) {
-                if (connectedStones.back() == temp) {
+                if (!empty && connectedStones.back() == temp) {
                     cout << bblue << fblack << "*" << reset << " ";
-                } else if (t){
+                } else if (!empty && t){
                     cout << bblue << fblack << "•" << reset << " ";
                 } else {
                     cout << bblue << " " << reset << " ";
@@ -349,15 +350,15 @@ int main() {
     create_board();
     vector <vector<int> > connectedStones;
     vector<int> temp(2);
-    temp[0] = 1;
-    temp[1] = 2;
-    connectedStones.push_back(temp);
-    temp[0] = 2;
-    temp[1] = 2;
-    connectedStones.push_back(temp);
-    temp[0] = 1;
-    temp[1] = 3;
-    connectedStones.push_back(temp);
+    // temp[0] = 1;
+    // temp[1] = 2;
+    // connectedStones.push_back(temp);
+    // temp[0] = 2;
+    // temp[1] = 2;
+    // connectedStones.push_back(temp);
+    // temp[0] = 1;
+    // temp[1] = 3;
+    // connectedStones.push_back(temp);
     print_board(connectedStones);
     print_player_health_bar();
     return 0;
