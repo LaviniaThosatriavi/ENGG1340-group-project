@@ -127,11 +127,11 @@ gamestatus readStructFromFile(const std::string& filename, int default_ph, int d
 
 
 // to change the value of player health , monster health and board content to the values from last game status 
-void updatestatus(int& player_health,int& monster_health,gamestatus update){
+void updatestatus(gamestatus update){
     // input : player_health , monster_health and data from last game status, all pass by refernece so the values are modified 
     // process: to update the values of player health , monter health and the board position , importing data from the last game 
-    player_health= update.PlayerH;
-    monster_health= update.MonsterH;
+    playerHealth= update.PlayerH;
+    monsterHealth= update.MonsterH;
     for(int i=0;i<row;i++){
         for (int j=0;j<col;j++){
             arr[i][j]=update.board[i][j];
@@ -449,7 +449,7 @@ int main() {// integration
     create_board();
     string status_file="gamestatus.txt";
     gamestatus last_game_status = readStructFromFile(status_file,default_ph,default_mh,arr);
-    updatestatus(playerHealth,monsterHealth,last_game_status);// to update the current player health and monster health and board 
+    updatestatus(last_game_status);// to update the current player health and monster health and board 
     // first read from the file to get the data from the last game 
     // Second we update the value of the player health , monster health and board from the last game
     while(true){
@@ -465,14 +465,17 @@ int main() {// integration
 
         int connections=move_stones(stone_position[1],stone_position[0]);// going to continue prompting user for the move until a stone which is not the same type is connected 
         cout<<"testing move stone"<<"\n";
-        print_monster();
-        print_monster_health_bar();
-        print_player_health_bar();
+
+
         // print the monster health bar 
         // print the player health bar 
 
         vector <int> result = calculate_score_for_each_stone(stone_type,connections);// calculatig the score for the connected stones
         execute_stone_actions(result);// apply the scores to the game scenario
+
+        print_monster();
+        print_monster_health_bar();
+        print_player_health_bar();
 
         // after this we have to grab the connection history and replace all the stones 
 
