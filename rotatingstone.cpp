@@ -227,11 +227,10 @@ int move_stones(int s_row,int s_col){
     temp[0]=s_col;// set the initial connection as the starting posiiton
     temp[1]=s_row;
     connection_history.push_back(temp);
-
+    print_board(connection_history);
     while(true){
         vector<int> stone_position={c_col,c_row};
         char move = prompt_user_move(stone_position,row,col);// prompt the user for the move
-
         if (move=='w'){//when stone is connected upward
             int next_stone = arr[c_row-1][c_col];// get the stone to be connected with
             if (next_stone==current_stone){// check whether the 2 are the same type 
