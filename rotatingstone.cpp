@@ -192,7 +192,7 @@ vector<int> prompt_stone_position(int board_row,int board_col){ //henry
     vector<int> position;
     // 2 do while loop to check whether the selected posiiton is on the board 
     do {
-        cout<<"please select the column of the stone which you would like to connect from";
+        cout<<"Please select the column of the stone which you would like to connect from: ";
         cin>>column;}
 
     while(column>=board_col||column<0);
@@ -200,7 +200,7 @@ vector<int> prompt_stone_position(int board_row,int board_col){ //henry
     position.push_back(column);
 
     do {
-        cout<<"please select the row of the stone which you would like to connect from";
+        cout<<"Please select the row of the stone which you would like to connect from: ";
         cin>>row;}
     while(row>=board_row||row<0);
 
@@ -284,13 +284,22 @@ int move_stones(int s_row,int s_col){
     return number_of_connections;
 }
 
-
-void remove_stones_after_connection(){// replace the connected stones with zero 
-
+void remove_stones_after_connection(vector<vector<int> > connectedStones){
+    // replace stone to 0
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < col; j++) {
+            vector<int> temp(2);
+            temp[0] = i;
+            temp[1] = j;
+            if (isVectorInVector(connectedStones, temp)) {
+                arr[i][j] = 0;
+            }
+        }
+    }
 }
 
-
 void regenearte_stones(){// animation 
+
 
 }
 
@@ -340,7 +349,11 @@ void execute_stone_actions(vector<int> stone) {
         case 1:
             // Stone type 1: Refill health bar
             cout << "Refilling player's health bar " << score << endl;
-            playerHealth += score;
+            if (playerHealth + score > 100) {
+                playerHealth = 100;
+            } else {
+                playerHealth += score;
+            }
             break;
 
         case 2:
@@ -370,9 +383,30 @@ void execute_stone_actions(vector<int> stone) {
 }
 
 void print_monster(){
-    cout << " ʕ•ᴥ•ʔ" << endl;
-    cout << "/(   )\\" << endl;
-    cout << " ^^ ^^" << endl; 
+    cout << "              ,   .-'\"'=;_  ," << endl;
+    cout << "              |\\.'-~`-.`-`;/|" << endl;
+    cout << "              \\.` '.'~-.` './" << endl;
+    cout << "              (\\`,__=-'__,'/)" << endl;
+    cout << "          _.-'-.( d\\_/b ).-'-._" << endl;
+    cout << "         /'.-'   ' .---. '   '-.`\\" << endl;
+    cout << "       /'  .' (=    (_)    =) '.  `\\" << endl;
+    cout << "      /'  .',  `-.__.-.__.-'  ,'.  `\\" << endl;
+    cout << "     (     .'.   V       V  ; '.     )" << endl;
+    cout << "     (    |::  `-,__.-.__,-'  ::|    )" << endl;
+    cout << "     |   /|`:.               .:'|\\   |" << endl;
+    cout << "     |  / | `:.              :' |`\\  |" << endl;
+    cout << "     | |  (  :.             .:  )  | |" << endl;
+    cout << "     | |   ( `:.            :' )   | |" << endl;
+    cout << "     | |    \\ :.           .: /    | |" << endl;
+    cout << "     | |     \\`:.         .:'/     | |" << endl;
+    cout << "     ) (      `\\`:.     .:'/'      ) (" << endl;
+    cout << "     (  `)_     ) `:._.:' (     _(`  )" << endl;
+    cout << "    \\  ' _)  .'           `.  (_ `  /" << endl;
+    cout << "      \\  '_) /   .'\"```\"'.   \\ (_`  /" << endl;
+    cout << "       `'\"`  \\  (         )  /  `\"'`" << endl;
+    cout << "   ___        `.`.       .'.'        ___" << endl;
+    cout << " .`   ``\"\"\"'''--`_)     (_'--'''\"\"\"``   `." << endl;
+    cout << "(_(_(___...--'\"'`         `'\"'--...___)_)_)" << endl;
 }
 
 void print_monster_health_bar(){
@@ -406,42 +440,30 @@ void print_player_health_bar(){
     cout<<" "<<playerHealth<<"\n";
 }
 void print_instructions(){
-    cout<<"the game works like this"<<"\n";
+    cout<<"Connect different stone types to defeat the monster!"<<"\n";
+    cout<<"* = current stone you are at"<<"\n";
+    cout<<"• = connected stones"<<"\n";
+    cout<< bred <<  " " << reset << " " << "Red = Refill player health."<<"\n";
+    cout<< byellow <<  " " << reset << " " << "Yellow = Attack the monster."<<"\n";
+    cout<< bgreen <<  " " << reset << " " << "Green = Skip a round of monster attack."<<"\n";
+    cout<< bblue <<  " " << reset << " " << "Blue = Increase the attack next round."<<"\n";
+    cout << endl;
 }
 
 // function to check whether the game has ended
 bool game_ended(int player_health , int monster_health){
     // the game ends when either player health or monster health goes to zero 
     if (player_health<=0){
-        cout << "unlucky you have lost the game "<<"\n";
+        cout << "Unlucky you have lost the game "<<"\n";
         return true;
     }
     else if (monster_health<=0){
-        cout<<"congrafulation you have won the game "<<"\n";
+        cout<<"Congrafulation you have won the game "<<"\n";
         return true;
     }
     return false;
     
 }
-
-void remove_stones_after_connection(vector<vector<int> > connectedStones){
-    // replace stone to 0
-    for (int i = 0; i < row; i++) {
-        for (int j = 0; j < col; j++) {
-            vector<int> temp(2);
-            temp[0] = i;
-            temp[1] = j;
-            if (isVectorInVector(connectedStones, temp)) {
-                arr[i][j] = 0;
-            }
-        }
-    }
-}
-
-
-
-
-
 
 int main() {// integration 
     int default_ph=100;
