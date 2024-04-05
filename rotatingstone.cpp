@@ -210,7 +210,19 @@ vector<int> prompt_stone_position(int board_row,int board_col){ //henry
     // index 0 is column , index 1 is row 
     return position ;
 }
-
+void remove_stones_after_connection(vector<vector<int> > connectedStones){
+    // replace stone to 0
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < col; j++) {
+            vector<int> temp(2);
+            temp[0] = i;
+            temp[1] = j;
+            if (isVectorInVector(connectedStones, temp)) {
+                arr[i][j] = 0;
+            }
+        }
+    }
+}
 
 int move_stones(int s_row,int s_col){
     //this function basically connect the stone according to the user selected move and selected stone
@@ -231,7 +243,7 @@ int move_stones(int s_row,int s_col){
     while(true){
         vector<int> stone_position={c_col,c_row};
         char move = prompt_user_move(stone_position,row,col);// prompt the user for the move
-
+        
         if (move=='w'){//when stone is connected upward
             int next_stone = arr[c_row-1][c_col];// get the stone to be connected with
             if (next_stone==current_stone){// check whether the 2 are the same type 
@@ -281,25 +293,25 @@ int move_stones(int s_row,int s_col){
     //print_board(connection_history);
     print_board(connection_history);
     }
+    remove_stones_after_connection(connection_history);
     return number_of_connections;
 }
 
-void remove_stones_after_connection(vector<vector<int> > connectedStones){
-    // replace stone to 0
-    for (int i = 0; i < row; i++) {
-        for (int j = 0; j < col; j++) {
-            vector<int> temp(2);
-            temp[0] = i;
-            temp[1] = j;
-            if (isVectorInVector(connectedStones, temp)) {
-                arr[i][j] = 0;
+
+void regenearte_stones(){// animation 
+    // get the boeard 
+    // loop thru each position in the biard '
+    // check whether it is a zero 
+    // if it is then we regernate between 1 to 4 
+    for (int i=0;i<row;i++){
+        for(int j=0;i<col;i++){
+            srand(time(0));
+            if(arr[i][j]==0){
+                arr[i][j]= 1+(rand()%4);
             }
         }
     }
-}
-
-void regenearte_stones(){// animation 
-
+    
 
 }
 
@@ -487,6 +499,9 @@ int main() {// integration
 
         int connections=move_stones(stone_position[1],stone_position[0]);// going to continue prompting user for the move until a stone which is not the same type is connected 
         cout<<"testing move stone"<<"\n";
+        // remove the connected stone
+        // regenerate a new baod 
+        regenearte_stones();
 
 
         // print the monster health bar 
@@ -498,6 +513,7 @@ int main() {// integration
         print_monster();
         print_monster_health_bar();
         print_player_health_bar();
+    
 
         // after this we have to grab the connection history and replace all the stones 
 
