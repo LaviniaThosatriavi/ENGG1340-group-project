@@ -210,17 +210,16 @@ vector<int> prompt_stone_position(int board_row,int board_col){ //henry
     // index 0 is column , index 1 is row 
     return position ;
 }
-void remove_stones_after_connection(vector<vector<int> > connectedStones){
-    // replace stone to 0
-    for (int i = 0; i < row; i++) {
-        for (int j = 0; j < col; j++) {
-            vector<int> temp(2);
-            temp[0] = i;
-            temp[1] = j;
-            if (isVectorInVector(connectedStones, temp)) {
-                arr[i][j] = 0;
-            }
-        }
+
+
+void regenearte_stones(vector <vector<int>> connected_stones){// animation 
+    // get the boeard 
+    // loop thru each position in the biard '
+    // check whether it is a zero 
+    // if it is then we regernate between 1 to 4 
+    srand(time(0));
+    for(auto connection:connected_stones){        
+        arr[connection[1]][connection[0]]= 1+(rand()%4);
     }
 }
 
@@ -239,11 +238,10 @@ int move_stones(int s_row,int s_col){
     temp[0]=s_col;// set the initial connection as the starting posiiton
     temp[1]=s_row;
     connection_history.push_back(temp);
-
+    print_board(connection_history);
     while(true){
         vector<int> stone_position={c_col,c_row};
         char move = prompt_user_move(stone_position,row,col);// prompt the user for the move
-        
         if (move=='w'){//when stone is connected upward
             int next_stone = arr[c_row-1][c_col];// get the stone to be connected with
             if (next_stone==current_stone){// check whether the 2 are the same type 
@@ -293,27 +291,13 @@ int move_stones(int s_row,int s_col){
     //print_board(connection_history);
     print_board(connection_history);
     }
-    remove_stones_after_connection(connection_history);
+    regenearte_stones(connection_history);
+    //remove_stones_after_connection(connection_history);
     return number_of_connections;
 }
 
 
-void regenearte_stones(){// animation 
-    // get the boeard 
-    // loop thru each position in the biard '
-    // check whether it is a zero 
-    // if it is then we regernate between 1 to 4 
-    for (int i=0;i<row;i++){
-        for(int j=0;i<col;i++){
-            srand(time(0));
-            if(arr[i][j]==0){
-                arr[i][j]= 1+(rand()%4);
-            }
-        }
-    }
-    
 
-}
 
 vector<int> calculate_score_for_each_stone(int stoneType, int numStones){
     // stone type 1 : refill player's health bar 
@@ -501,7 +485,6 @@ int main() {// integration
         cout<<"testing move stone"<<"\n";
         // remove the connected stone
         // regenerate a new baod 
-        regenearte_stones();
 
 
         // print the monster health bar 
