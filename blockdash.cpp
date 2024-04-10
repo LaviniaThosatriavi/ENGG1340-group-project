@@ -37,6 +37,30 @@ array<string, MapHeight> createArrMap(string fileName)
     return mapData; // return the map array that contains each line of the map
 }
 
+// calculate the number of blocks in one row = mapWidth
+int getMapWidth(const array<string, MapHeight> &mapData)
+{
+    // Iterate over each row in the mapData array
+    for (string row : mapData)
+    {
+        // Return the length of the first row = the full length of the map in the game
+        return row.length();
+    }
+    // Return 0 if the mapData array is empty
+    return 0;
+}
+
+// find the terminal width of the laptop being used
+int getTerminalWidth()
+{
+    struct winsize size;
+
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &size); // Get the size of the terminal window using ioctl system call
+    int terminalWidth = size.ws_col;
+
+    return terminalWidth;
+}
+
 // print the win screen from text file called "win.txt"
 void winScreen(int terminalWidth)
 {
@@ -100,4 +124,15 @@ void loseScreen(int terminalWidth)
         }
         cout << color_line;
     }
+}
+
+int main()
+{
+    string fileName = "1.txt";
+    array<string, MapHeight> mapData = createArrMap(fileName); // store the desired map in the array, ready for further operation
+
+    const int MapWidth = getMapWidth(mapData);
+    int terminalWidth = getTerminalWidth();
+    
+    return 0;
 }
