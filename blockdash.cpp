@@ -222,12 +222,28 @@ bool checkCollision(int MapWidth, int playerX, int playerY)
 // make the map move to the right
 void moveMap(array<string, MapHeight> &mapData, int terminalWidth, int startPoint, int MapWidth, int playerX, int playerY)
 {
+    int times = 0;
     while (startPoint <= (MapWidth - (terminalWidth / 2))) // while the x of the player doesn't reach the end of the map
     {
         // move the map to the left
       clearScreen();
       printMap(mapData, terminalWidth, startPoint, MapWidth, playerX, playerY);
 
+        if (isSpaceBarPressed()) // if the going up command is called
+        {
+        playerY -= 2; // go up by 2 blocks
+        }
+        else if ((times % 4) == 1)
+        {
+        playerY++; // serving as gravity that will make player gradually fall down
+        }
+        
+        if (checkCollision(MapWidth, playerX, playerY))
+        {
+        win = false; // if the player collides with the obstacle, calling game over
+        break;
+        }
+        
       startPoint++;
       sleep(50);
     }
