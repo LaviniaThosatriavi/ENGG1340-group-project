@@ -270,7 +270,7 @@ bool checkCollision(int MapWidth, int playerX, int playerY)
 // 3) always check if the next move of the player collides with obstacles or be out of the map boundaries
 // 4) print win when the player reaches finish point
 // 5) print lose (game over) when the player collides
-void moveMap(array<string, MapHeight> &mapData, int terminalWidth, int startPoint, int MapWidth, int playerX, int playerY)
+void moveMap(array<string, MapHeight> &mapData, int terminalWidth, int startPoint, int MapWidth, int playerX, int &playerY)
 {
     int times = 0;
     while (startPoint <= (MapWidth - (terminalWidth / 2))) // while the x of the player doesn't reach the end of the map
@@ -295,6 +295,7 @@ void moveMap(array<string, MapHeight> &mapData, int terminalWidth, int startPoin
         }
         
       startPoint++;
+      times++;
       sleep(50);
     }
 
@@ -312,7 +313,6 @@ void moveMap(array<string, MapHeight> &mapData, int terminalWidth, int startPoin
 
 int main()
 {
-    //
     srand(static_cast<unsigned int>(time(nullptr)));           // random number
     int randomNumber = (rand() % 5) + 1;                       // limit the range of number to 1-5
     string fileName = to_string(randomNumber) + ".txt";        // random the map file to be opened
