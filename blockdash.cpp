@@ -1,10 +1,19 @@
 #include <iostream>
 #include <string>
 #include <array>
+#include <chrono>
+#include <sys/ioctl.h>
 #include <fstream>
 #include <sstream>
+#include <ctime>
 
 using namespace std;
+
+#ifdef _WIN32
+#include <windows.h> // for Windows Operating System
+#else
+#include <unistd.h> // for Unix-like System
+#endif
 
 const int MapHeight = 17;
 // store each line of the map in the array
@@ -61,11 +70,26 @@ int getTerminalWidth()
     return terminalWidth;
 }
 
+// clear the terminal screen / delete all the contents previously printed
+void clearScreen()
+{
+    // \033[2J clears the entire screen
+    // \033[1;1H positions the cursor at the top-left corner of the screen
+    cout << "\033[2J\033[1;1H" << endl;
+}
+
+// delay the process
+void sleep(int t)
+{
+    this_thread::sleep_for(chrono::milliseconds(t)); // delay for t ms
+}
+
 // print a part of a map with colored blocks and player to terminal
 void printMap(array<string, MapHeight> &mapData, int terminalWidth, int startPoint, int MapWidth, int playerX, int playerY)
 {
     int endPoint = min(startPoint + terminalWidth, MapWidth - 1); // end point of the map to be printed at that time
-    for (string &row : mapData)
+    int time = 0;
+    for (const string row : mapData)
     {
         string line;
         if (startPoint < row.length())
@@ -76,6 +100,9 @@ void printMap(array<string, MapHeight> &mapData, int terminalWidth, int startPoi
         {
             line = string(terminalWidth, ' ');
         }
+
+        mapPortion[time] = line; // update the portion of the map that will be printed
+        time++;
 
         cout << "\r"; // Reset terminal cursor to the beginning of the line
         cout << line << endl;
@@ -147,6 +174,31 @@ void loseScreen(int terminalWidth)
     }
 }
 
+// make the map move to the right
+void moveMap(array<string, MapHeight> &mapData, int terminalWidth, int startPoint, int MapWidth, int playerX, int playerY)
+{
+    while (startPoint <= (MapWidth - (terminalWidth / 2))) // while the x of the player doesn't reach the end of the map
+    {
+        // move the map to the left
+      clearScreen();
+      printMap(mapData, terminalWidth, startPoint, MapWidth, playerX, playerY);
+
+      startPoint++;
+      sleep(50);
+    }
+
+    clearScreen();
+    
+    if (win) // if the player reaches the end point of the whole map, print win screen to congratulate them
+    {
+        winScreen(terminalWidth);
+    }
+    else // if the player loses, print lose screen to tell them that the game is over
+    {
+        loseScreen(terminalWidth);
+    }
+}
+
 int main()
 {
     string fileName = "1.txt";
@@ -158,7 +210,7 @@ int main()
     int playerY = MapHeight / 2;           // player will start from the middle of the map
     const int playerX = terminalWidth / 2; // player is always at the center of the map
 
-    printMap(mapData, terminalWidth, startPoint, MapWidth, playerX, playerY)
+    moveMap(mapData, terminalWidth, startPoint, MapWidth, playerX, playerY); // operating the games
     
     return 0;
 }
