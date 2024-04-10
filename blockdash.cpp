@@ -6,6 +6,7 @@
 #include <fstream>
 #include <sstream>
 #include <ctime>
+#include <ncurses.h>
 
 using namespace std;
 
@@ -197,6 +198,18 @@ void loseScreen(int terminalWidth)
     }
 }
 
+// check if space bar is pressed = the command for player to go up
+bool isSpaceBarPressed()
+{
+
+    int ch = getch(); // read a character from the keyboard
+    if (ch == ' ')    // return true if space bar is pressed on the keyboard
+    {
+        return true;
+    }
+
+    return false;
+}
 
 // check if current position of the player is safe = no collision
 bool checkCollision(int MapWidth, int playerX, int playerY)
@@ -272,6 +285,12 @@ int main()
     int startPoint = 0;
     int playerY = MapHeight / 2;           // player will start from the middle of the map
     const int playerX = terminalWidth / 2; // player is always at the center of the map
+
+    // setting for enabling the constantly checking for input function
+    initscr();             // Initialize ncurses
+    cbreak();              // Disable line buffering
+    noecho();              // Disable automatic echoing of input
+    nodelay(stdscr, true); // Enable non-blocking input
 
     moveMap(mapData, terminalWidth, startPoint, MapWidth, playerX, playerY); // operating the games
     
