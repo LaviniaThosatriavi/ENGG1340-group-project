@@ -262,6 +262,8 @@ void moveMap(array<string, MapHeight> &mapData, int terminalWidth, int startPoin
 
 int main()
 {
+    srand(static_cast<unsigned int>(time(nullptr)));           // random number
+    int randomNumber = (rand() % 5) + 1; 
     string fileName = "1.txt";
     array<string, MapHeight> mapData = createArrMap(fileName); // store the desired map in the array, ready for further operation
 
