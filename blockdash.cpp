@@ -308,27 +308,3 @@ void moveMap(array<string, MapHeight> &mapData, int terminalWidth, int startPoin
         loseScreen(terminalWidth);
     }
 }
-
-int main()
-{
-    srand(static_cast<unsigned int>(time(nullptr)));           // random number
-    int randomNumber = (rand() % 5) + 1;                       // limit the range of number to 1-5
-    string fileName = to_string(randomNumber) + ".txt";        // random the map file to be opened
-    array<string, MapHeight> mapData = createArrMap(fileName); // store the desired map in the array, ready for further operation
-
-    const int MapWidth = getMapWidth(mapData);
-    int terminalWidth = getTerminalWidth();
-    int startPoint = 0;
-    int playerY = MapHeight / 2;           // player will start from the middle of the map
-    const int playerX = terminalWidth / 2; // player is always at the center of the map
-
-    // setting for enabling the constantly checking for input function
-    initscr();             // Initialize ncurses
-    cbreak();              // Disable line buffering
-    noecho();              // Disable automatic echoing of input
-    nodelay(stdscr, true); // Enable non-blocking input
-
-    moveMap(mapData, terminalWidth, startPoint, MapWidth, playerX, playerY); // operating the games
-    
-    return 0;
-}
