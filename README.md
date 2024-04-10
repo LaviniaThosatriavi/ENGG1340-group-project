@@ -89,5 +89,6 @@ In Block Dash, your goal is to guide the player character, represented by the le
 
 ![Sample 2](gifsamples/blockdash_sample2.GIF)
 
+![Sample 3](gifsamples/blockdash_sample3.GIF)
 
 I hope this README provides a detailed overview of your Block Dash game. Let me know if you have any further questions!
