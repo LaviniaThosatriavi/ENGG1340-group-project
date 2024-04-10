@@ -197,6 +197,28 @@ void loseScreen(int terminalWidth)
     }
 }
 
+
+// check if current position of the player is safe = no collision
+bool checkCollision(int MapWidth, int playerX, int playerY)
+{
+
+    // Check if the player's position is within the map boundaries
+    if (playerX < 0 || playerX >= MapWidth || playerY < 0 || playerY >= MapHeight)
+    {
+        return true; // return true if the player is out of the map
+    }
+
+    // Check if the player collides with an obstacle
+    char obstacle1 = 'O';
+    char obstacle2 = 'X';
+    if (mapPortion[playerY][playerX] == obstacle1 || mapPortion[playerY][playerX] == obstacle2)
+    {
+        return true; // return true if the player collide
+    }
+
+    return false; // no collision, return false
+}
+
 // make the map move to the right
 void moveMap(array<string, MapHeight> &mapData, int terminalWidth, int startPoint, int MapWidth, int playerX, int playerY)
 {
