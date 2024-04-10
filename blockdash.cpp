@@ -16,6 +16,13 @@ using namespace std;
 #endif
 
 const int MapHeight = 17;
+const string BROWN_COLOR = "\033[38;2;139;69;19m"; // Brown color escape code
+const string BLUE_COLOR = "\033[34m";              // Blue color escape code
+const string RESET_COLOR = "\033[0m";              // Reset color escape code
+const string RED_COLOR = "\033[31m";               // Red color escape code
+bool win = true;
+array<string, MapHeight> mapPortion; // short version of map that will be printed at a time
+
 // store each line of the map in the array
 array<string, MapHeight> createArrMap(string fileName)
 {
