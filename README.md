@@ -84,9 +84,8 @@ In Block Dash, your goal is to guide the player character, represented by the le
 - If the player successfully reaches the bottom of the map, they win the game, and a win screen is displayed.
 - After the win screen, the game moves on to the next stage with a new random map.
 
-## Screenshots
-
-- Include screenshots or GIFs showcasing the game..
+## Sample Runs
+![Sample 1](gifsamples/blockdash_sample1.GIF)
 
 
 I hope this README provides a detailed overview of your Block Dash game. Let me know if you have any further questions!
