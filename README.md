@@ -101,4 +101,7 @@ In Block Dash, your goal is to guide the player character, represented by the le
   - The map contents will be loaded from a separate text file. The contents of the file will be read and stored in the mapData array for later use.
   - The winScreen and loseScreen functions will read design files ("win.txt" and "lose.txt" respectively) and print the screen accordingly.
 
+## Non-standard C/C++ libraries used
+- ncurses.h is used to implement the isSpaceBarPressed function, which allows continuous detection of the space bar without the need to press the enter key. When the space bar is pressed, the player character will move up by two blocks in the game.
+
 I hope this README provides a detailed overview of your Block Dash game. Let me know if you have any further questions!
