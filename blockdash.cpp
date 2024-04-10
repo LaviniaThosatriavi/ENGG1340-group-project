@@ -61,6 +61,27 @@ int getTerminalWidth()
     return terminalWidth;
 }
 
+// print a part of a map with colored blocks and player to terminal
+void printMap(array<string, MapHeight> &mapData, int terminalWidth, int startPoint, int MapWidth, int playerX, int playerY)
+{
+    int endPoint = min(startPoint + terminalWidth, MapWidth - 1); // end point of the map to be printed at that time
+    for (string &row : mapData)
+    {
+        string line;
+        if (startPoint < row.length())
+        {
+            line = row.substr(startPoint, endPoint - startPoint); // print from the start to the end with the length of terminalWidth
+        }
+        else
+        {
+            line = string(terminalWidth, ' ');
+        }
+
+        cout << "\r"; // Reset terminal cursor to the beginning of the line
+        cout << line << endl;
+    }
+}
+
 // print the win screen from text file called "win.txt"
 void winScreen(int terminalWidth)
 {
@@ -133,6 +154,11 @@ int main()
 
     const int MapWidth = getMapWidth(mapData);
     int terminalWidth = getTerminalWidth();
+    int startPoint = 0;
+    int playerY = MapHeight / 2;           // player will start from the middle of the map
+    const int playerX = terminalWidth / 2; // player is always at the center of the map
+
+    printMap(mapData, terminalWidth, startPoint, MapWidth, playerX, playerY)
     
     return 0;
 }
