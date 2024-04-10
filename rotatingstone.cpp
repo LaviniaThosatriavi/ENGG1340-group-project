@@ -461,6 +461,17 @@ bool game_ended(int player_health , int monster_health){
     
 }
 
+bool prompt_quit(){
+    char quit;
+    cout<<"press q to quit or any key to continue the game , ur game status will be saved";
+    cin>>quit;
+    if (quit=='q'){
+        return true;
+    }
+    return false;
+}
+
+
 int main() {// integration 
     int default_ph=100;
     int default_mh=100;
@@ -492,27 +503,21 @@ int main() {// integration
 
         vector <int> result = calculate_score_for_each_stone(stone_type,connections);// calculatig the score for the connected stones
         execute_stone_actions(result);// apply the scores to the game scenario
-
+        if (stone_type!=2){
+            playerHealth-=10;// attack on the player after every round
+        }
         print_monster();
         print_monster_health_bar();
         print_player_health_bar();
+
+        // monster to attck us every round 
+        
+        
     
 
         // after this we have to grab the connection history and replace all the stones 
 
         if (game_ended(playerHealth,monsterHealth)){
-            // check if the game has ended after every connection ;
-            // ask if the player would like to play again 
-            char restart;
-            cout<<"the game has ended would you like to restart press , press y to restart and any key to end "<<"\n";
-            cin>>restart;
-            if (restart=='y'){
-                cout<<"hi";
-            }
-            else{
-                cout<<"bye";
-
-            }
             gamestatus new_game ;// creating a new game status object 
             new_game.PlayerH=default_ph;// set the default value of the player health 
             new_game.MonsterH=default_mh;// set the default value of the monster heatlth 
@@ -536,5 +541,21 @@ int main() {// integration
         // ask player to select move 
         // call the connect stone function , it will then print the board out 
         // after they finish the game , we reset the game status to the default setting in the game status file 
+        // we give user an option to quit if they enter q , this will be run everytime afte they finish a connection 
+
+        if (prompt_quit()){
+            gamestatus stat ;
+            stat.PlayerH=playerHealth;
+            stat.MonsterH=monsterHealth;
+            for(int i=0;i<row;i++){// 
+                for (int j=0;j<col;j++){
+                    stat.board[i][j]=arr[i][j];
+            } 
+        }
+            writeStructToFile(stat,status_file);
+            break;
+        }
+        }
     }
-}
+
+
