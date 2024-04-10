@@ -36,3 +36,35 @@ array<string, MapHeight> createArrMap(string fileName)
 
     return mapData; // return the map array that contains each line of the map
 }
+
+// print the win screen from text file called "win.txt"
+void winScreen(int terminalWidth)
+{
+    ifstream fin;
+    fin.open("win.txt"); // open the win design page
+    string line;
+    while (getline(fin, line)) // store each line of the file to variable line
+    {
+        string color_line = "";
+        for (char c : line) // add color to each block
+        {
+            if (c == '=')
+            {
+                color_line += BROWN_COLOR;
+                color_line += c;
+                color_line += RESET_COLOR;
+            }
+            else
+            {
+                color_line += RED_COLOR;
+                color_line += c;
+                color_line += RESET_COLOR;
+            }
+        }
+        if (line.length() < terminalWidth)
+        {
+            color_line += string(terminalWidth - line.length(), ' '); // fill the empty space with whitespace to make sure the alignment is correct
+        }
+        cout << color_line;
+    }
+}
