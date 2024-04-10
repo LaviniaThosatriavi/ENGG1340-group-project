@@ -77,6 +77,22 @@ int getTerminalWidth()
     return terminalWidth;
 }
 
+// add the player character 'P' to the correct line of the map to be printed
+void addPlayer(string &line, int playerX)
+{
+    string bluePlayer = BLUE_COLOR + "P" + RESET_COLOR; // Blue-colored player character
+
+    if (playerX < line.length())
+    {
+        line.replace(playerX, 1, bluePlayer); // Replace character at playerX with bluePlayer
+    }
+    else
+    {
+        line += string(playerX - line.length(), ' '); // if nothing is in that position in the map
+        line += bluePlayer;                           // Append bluePlayer at the end of the line
+    }
+}
+
 // clear the terminal screen / delete all the contents previously printed
 void clearScreen()
 {
