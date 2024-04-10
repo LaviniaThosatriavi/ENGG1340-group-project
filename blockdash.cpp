@@ -109,7 +109,7 @@ void sleep(int t)
 }
 
 // print a part of a map with colored blocks and player to terminal
-void printMap(array<string, MapHeight> &mapData, int terminalWidth, int startPoint, int MapWidth, int playerX, int playerY)
+void printMap(array<string, MapHeight> mapData, int terminalWidth, int startPoint, int MapWidth, int playerX, int playerY)
 {
     int endPoint = min(startPoint + terminalWidth, MapWidth - 1); // end point of the map to be printed at that time
     int time = 0;
@@ -125,11 +125,42 @@ void printMap(array<string, MapHeight> &mapData, int terminalWidth, int startPoi
             line = string(terminalWidth, ' ');
         }
 
+        if (row.compare(mapData[playerY]) == 0) // add player if that row is the one containting player
+        {
+            addPlayer(line, playerX);
+        }
+
         mapPortion[time] = line; // update the portion of the map that will be printed
         time++;
-
         cout << "\r"; // Reset terminal cursor to the beginning of the line
-        cout << line << endl;
+
+        string outputLine; // real output line with updated block color
+        for (char &c : line)
+        {
+            if (c == 'X') // first obstacle with brown
+            {
+                outputLine += BROWN_COLOR;
+                outputLine += c;
+                outputLine += RESET_COLOR;
+            }
+            else if (c == 'O') // second obstacle with red
+            {
+                outputLine += RED_COLOR;
+                outputLine += c;
+                outputLine += RESET_COLOR;
+            }
+            else if (c == 'P') // player with blue
+            {
+                outputLine += BLUE_COLOR;
+                outputLine += c;
+                outputLine += RESET_COLOR;
+            }
+            else
+            {
+                outputLine += c;
+            }
+        }
+        cout << outputLine << endl;
     }
 }
 
