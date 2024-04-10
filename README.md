@@ -41,14 +41,11 @@ In Block Dash, your goal is to guide the player character, represented by the le
 - [Controls](#controls)
 - [Gameplay](#gameplay)
 - [Screenshots](#screenshots)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Installation
 
 1. Install the required dependencies:
-   - `ncurses` library
-   - `conio.c` and `conio.h` files
+   - `ncurses` library from blockdash.cpp
 
 2. Clone the repository:
 
@@ -59,7 +56,7 @@ In Block Dash, your goal is to guide the player character, represented by the le
 3. Compile the code:
 
    ```bash
-   g++ main.cpp -o block-dash -lncurses
+   g++ blockdash.cpp -o block-dash -lncurses
    ```
 
 ## Usage
