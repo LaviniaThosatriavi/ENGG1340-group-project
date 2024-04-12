@@ -73,7 +73,8 @@ int getTerminalWidth()
 {
     struct winsize size;
 
-    ioctl(STDOUT_FILENO, TIOCGWINSZ, &size); // Get the size of the terminal window using ioctl system call
+    // Get the size of the terminal window using ioctl system call
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &size); 
     int terminalWidth = size.ws_col;
 
     return terminalWidth;
@@ -86,12 +87,15 @@ void addPlayer(string &line, int playerX)
 
     if (playerX < line.length())
     {
-        line.replace(playerX, 1, bluePlayer); // Replace character at playerX with bluePlayer
+        // Replace character at playerX with bluePlayer
+        line.replace(playerX, 1, bluePlayer); 
     }
     else
     {
-        line += string(playerX - line.length(), ' '); // if nothing is in that position in the map
-        line += bluePlayer;                           // Append bluePlayer at the end of the line
+        // if nothing is in that position in the map
+        line += string(playerX - line.length(), ' '); 
+        // Append bluePlayer at the end of the line
+        line += bluePlayer;                           
     }
 }
 
@@ -106,7 +110,8 @@ void clearScreen()
 // delay the process
 void sleep(int t)
 {
-    this_thread::sleep_for(chrono::milliseconds(t)); // delay for t ms
+    // delay for t ms
+    this_thread::sleep_for(chrono::milliseconds(t)); 
 }
 
 // print a part of a map with colored blocks and player to terminal
@@ -119,23 +124,28 @@ void printMap(array<string, MapHeight> mapData, int terminalWidth, int startPoin
         string line;
         if (startPoint < row.length())
         {
-            line = row.substr(startPoint, endPoint - startPoint); // print from the start to the end with the length of terminalWidth
+            // print from the start to the end with the length of terminalWidth
+            line = row.substr(startPoint, endPoint - startPoint); 
         }
         else
         {
             line = string(terminalWidth, ' ');
         }
 
-        if (row.compare(mapData[playerY]) == 0) // add player if that row is the one containting player
+        // add player if that row is the one containting player
+        if (row.compare(mapData[playerY]) == 0) 
         {
             addPlayer(line, playerX);
         }
 
-        mapPortion[time] = line; // update the portion of the map that will be printed
+        // update the portion of the map that will be printed
+        mapPortion[time] = line; 
         time++;
-        cout << "\r"; // Reset terminal cursor to the beginning of the line
+        // Reset terminal cursor to the beginning of the line
+        cout << "\r"; 
 
-        string outputLine; // real output line with updated block color
+        // real output line with updated block color
+        string outputLine; 
         for (char &c : line)
         {
             if (c == 'X') // first obstacle with brown
@@ -169,12 +179,17 @@ void printMap(array<string, MapHeight> mapData, int terminalWidth, int startPoin
 void winScreen(int terminalWidth)
 {
     ifstream fin;
-    fin.open("win.txt"); // open the win design page
+    // open the win design page
+    fin.open("win.txt"); 
     string line;
-    while (getline(fin, line)) // store each line of the file to variable line
+    
+     // store each line of the file to variable line
+    while (getline(fin, line))
     {
         string color_line = "";
-        for (char c : line) // add color to each block
+
+        // add color to each block
+        for (char c : line) 
         {
             if (c == '=')
             {
@@ -191,7 +206,8 @@ void winScreen(int terminalWidth)
         }
         if (line.length() < terminalWidth)
         {
-            color_line += string(terminalWidth - line.length(), ' '); // fill the empty space with whitespace to make sure the alignment is correct
+            // fill the empty space with whitespace to make sure the alignment is correct
+            color_line += string(terminalWidth - line.length(), ' '); 
         }
         cout << color_line;
     }
@@ -202,12 +218,18 @@ void loseScreen(int terminalWidth)
 {
 
     ifstream fin;
-    fin.open("lose.txt"); // open the lose design page
+
+    // open the lose design page
+    fin.open("lose.txt"); 
     string line;
-    while (getline(fin, line)) // store each line of the file to variable line
+
+    // store each line of the file to variable line
+    while (getline(fin, line)) 
     {
         string color_line = "";
-        for (char c : line) // add color to each block
+
+        // add color to each block
+        for (char c : line) 
         {
             if (c == '=')
             {
@@ -224,7 +246,8 @@ void loseScreen(int terminalWidth)
         }
         if (line.length() < terminalWidth)
         {
-            color_line += string(terminalWidth - line.length(), ' '); // fill the empty space with whitespace to make sure the alignment is correct
+            // fill the empty space with whitespace to make sure the alignment is correct
+            color_line += string(terminalWidth - line.length(), ' '); 
         }
         cout << color_line;
     }
@@ -235,7 +258,9 @@ bool isSpaceBarPressed()
 {
 
     int ch = getch(); // read a character from the keyboard
-    if (ch == ' ')    // return true if space bar is pressed on the keyboard
+
+    // return true if space bar is pressed on the keyboard
+    if (ch == ' ')    
     {
         return true;
     }
@@ -250,7 +275,8 @@ bool checkCollision(int MapWidth, int playerX, int playerY)
     // Check if the player's position is within the map boundaries
     if (playerX < 0 || playerX >= MapWidth || playerY < 0 || playerY >= MapHeight)
     {
-        return true; // return true if the player is out of the map
+        // return true if the player is out of the map
+        return true; 
     }
 
     // Check if the player collides with an obstacle
@@ -258,10 +284,12 @@ bool checkCollision(int MapWidth, int playerX, int playerY)
     char obstacle2 = 'X';
     if (mapPortion[playerY][playerX] == obstacle1 || mapPortion[playerY][playerX] == obstacle2)
     {
-        return true; // return true if the player collide
+        // return true if the player collide
+        return true; 
     }
 
-    return false; // no collision, return false
+    // no collision, return false
+    return false; 
 }
 
 // controlling the main logic and operation of the games by combining many functions together:
@@ -273,25 +301,31 @@ bool checkCollision(int MapWidth, int playerX, int playerY)
 void moveMap(array<string, MapHeight> &mapData, int terminalWidth, int startPoint, int MapWidth, int playerX, int &playerY)
 {
     int times = 0;
-    while (startPoint <= (MapWidth - (terminalWidth / 2))) // while the x of the player doesn't reach the end of the map
+
+    // while the x of the player doesn't reach the end of the map
+    while (startPoint <= (MapWidth - (terminalWidth / 2))) 
     {
         // move the map to the left
       clearScreen();
       printMap(mapData, terminalWidth, startPoint, MapWidth, playerX, playerY);
 
-        if (isSpaceBarPressed()) // if the going up command is called
+        // if the going up command is called
+        if (isSpaceBarPressed()) 
         {
-        playerY -= 2; // go up by 2 blocks
+            // go up by 2 blocks
+            playerY -= 2; 
         }
         else if ((times % 4) == 1)
         {
-        playerY++; // serving as gravity that will make player gradually fall down
+            // serving as gravity that will make player gradually fall down 
+            playerY++; 
         }
         
         if (checkCollision(MapWidth, playerX, playerY))
         {
-        win = false; // if the player collides with the obstacle, calling game over
-        break;
+            // if the player collides with the obstacle, calling game over
+            win = false; 
+            break;
         }
         
       startPoint++;
@@ -300,12 +334,14 @@ void moveMap(array<string, MapHeight> &mapData, int terminalWidth, int startPoin
     }
 
     clearScreen();
-    
-    if (win) // if the player reaches the end point of the whole map, print win screen to congratulate them
+
+    // if the player reaches the end point of the whole map, print win screen to congratulate them
+    if (win) 
     {
         winScreen(terminalWidth);
     }
-    else // if the player loses, print lose screen to tell them that the game is over
+    // if the player loses, print lose screen to tell them that the game is over
+    else 
     {
         loseScreen(terminalWidth);
     }
@@ -330,7 +366,8 @@ int main()
     noecho();              // Disable automatic echoing of input
     nodelay(stdscr, true); // Enable non-blocking input
 
-    moveMap(mapData, terminalWidth, startPoint, MapWidth, playerX, playerY); // operating the games
+    // operating the games
+    moveMap(mapData, terminalWidth, startPoint, MapWidth, playerX, playerY); 
     
     return 0;
 }
