@@ -1,11 +1,11 @@
 # ENGG1340-group-project
 
-## first time:
+## Set up:
 ```bash
 git clone https://github.com/tracy308/ENGG1340-group-project.git
 ```
 
-## to update files:
+## To update files:
 ``` bash
 git pull 
 # pull from the main branch to update any file changes from other people
@@ -30,7 +30,7 @@ make
 make clean
 ```
 
-## Block Dash
+## STAGE 2: Block Dash
 
 In Block Dash, your goal is to guide the player character, represented by the letter 'P', through a series of randomly generated maps. The maps are filled with obstacles represented by brown or red blocks. The player must navigate through the map and reach the bottom without colliding with any obstacles. 
 
@@ -41,6 +41,7 @@ In Block Dash, your goal is to guide the player character, represented by the le
 - [Controls](#controls)
 - [Gameplay](#gameplay)
 - [Screenshots](#screenshots)
+- [Features](#features)
 
 ## Installation
 
@@ -91,17 +92,15 @@ In Block Dash, your goal is to guide the player character, represented by the le
 
 ![Sample 3](gifsamples/blockdash_sample3.GIF)
 
-## Features of the games
+## Features 
 1. Generation of random game sets or events:
-  - The map selection will be randomized using the rand() and srand() functions.
+  - Randomized map selection using the rand() and srand() functions.
 2. Data structures for storing game status:
   - The mapData array is an array of strings that holds the complete map data. It will be accessed each time to retrieve the map portions that need to be printed. Additionally, it will be used to refer to when adding the player to the map and color the map accordingly.
   - The mapPortion array is used to store a portion of the map that will be printed on the terminal. It will also be utilized in the collision detection function to determine if the character located at the player's index represents an obstacle. If a collision occurs, it means that the player has collided with an obstacle and has lost the game.
-3. File input/output:
-  - The map contents will be loaded from a separate text file. The contents of the file will be read and stored in the mapData array for later use.
-  - The winScreen and loseScreen functions will read design files ("win.txt" and "lose.txt" respectively) and print the screen accordingly.
+3. File I/O:
+  - Map contents loaded from a separate text file which is then read and stored in mapData array. 
+  - Win and lose screens read from design files ("win.txt" and "lose.txt" respectively) and printed to adjust to terminal width accordingly.
 
 ## Non-standard C/C++ libraries used
 - ncurses.h is used to implement the isSpaceBarPressed function, which allows continuous detection of the space bar without the need to press the enter key. When the space bar is pressed, the player character will move up by two blocks in the game.
-
-I hope this README provides a detailed overview of your Block Dash game. Let me know if you have any further questions!
