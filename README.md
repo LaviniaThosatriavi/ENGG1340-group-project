@@ -23,11 +23,13 @@ git push
 # push your changes to the branch
 ```
 
+## STAGE 1: Rotating Stones
+In rotating stones, your goal is to kill the monster. The player has to connect stones of different types to defeat the monster. However, each round the monster will also attack the player, decreasing the player's health. When the player's health reaches 0, the player loses the game. On the contrary, if the monster's health drops to 0 or below, the player wins the stage.
+
 ## Run File
 ``` bash
 make
 ./rs
-make clean
 ```
 
 ## STAGE 2: Block Dash
