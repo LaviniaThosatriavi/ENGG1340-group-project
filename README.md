@@ -1,11 +1,13 @@
 # ENGG1340-group-project
 
-## Set up:
+## STAGE 1: ROTATING STONES
+
+## Set Up
 ```bash
 git clone https://github.com/tracy308/ENGG1340-group-project.git
 ```
 
-## To update files:
+## Update Files
 ``` bash
 git pull 
 # pull from the main branch to update any file changes from other people
