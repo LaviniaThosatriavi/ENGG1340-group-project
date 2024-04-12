@@ -1,7 +1,5 @@
 # ENGG1340-group-project
 
-## STAGE 1: ROTATING STONES
-
 ## Set Up
 ```bash
 git clone https://github.com/tracy308/ENGG1340-group-project.git
