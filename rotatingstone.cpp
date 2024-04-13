@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include <fstream>
+#include <limits>
 
 using namespace std;
 
@@ -40,6 +41,7 @@ bool isVectorInVector(const vector<vector<int> >& outer, const vector<int>& targ
 void print_board(vector <vector<int> > connectedStones){
     // * = current stone
     // • = connected stone
+    cout<<" "<<0<<" "<<1<<" "<<2<<" "<<3<<" "<<4<<endl;
     for (int i = 0; i < row; i++) {
         for (int j = 0; j < col; j++) {
             vector<int> temp(2);
@@ -48,14 +50,20 @@ void print_board(vector <vector<int> > connectedStones){
             bool t = isVectorInVector(connectedStones, temp);
             bool empty = connectedStones.empty();
             if (arr[i][j] == 1) {
+                if(j==0){
+                    cout<<i;
+                }
                 if (!empty && connectedStones.back() == temp) {
-                    cout << bred << fblack << "*" << reset << " ";
+                    cout<< bred << fblack << "*" << reset << " ";
                 } else if (t){
                     cout << bred << fblack << "•" << reset << " ";
                 } else {
                     cout << bred << " " << reset << " ";
                 }
             } else if (arr[i][j] == 2) {
+                if(j==0){
+                    cout<<i;
+                }
                 if (!empty && connectedStones.back() == temp) {
                     cout << bgreen << fblack << "*" << reset << " ";
                 } else if (!empty && t){
@@ -64,6 +72,9 @@ void print_board(vector <vector<int> > connectedStones){
                     cout << bgreen << " " << reset << " ";
                 }
             } else if (arr[i][j] == 3) {
+                if(j==0){
+                    cout<<i;
+                }
                 if (!empty && connectedStones.back() == temp) {
                     cout << byellow << fblack << "*" << reset << " ";
                 } else if (!empty && t){
@@ -72,6 +83,9 @@ void print_board(vector <vector<int> > connectedStones){
                     cout << byellow << " " << reset << " ";
                 }
             } else if (arr[i][j] == 4) {
+                if(j==0){
+                    cout<<i;
+                }
                 if (!empty && connectedStones.back() == temp) {
                     cout << bblue << fblack << "*" << reset << " ";
                 } else if (!empty && t){
@@ -193,7 +207,15 @@ vector<int> prompt_stone_position(int board_row,int board_col){ //henry
     // 2 do while loop to check whether the selected posiiton is on the board 
     do {
         cout<<"Please select the column of the stone which you would like to connect from: ";
-        cin>>column;}
+        cin>>column;
+        if (!(std::cin >> column)) {
+            std::cin.clear(); // Clear the error state of cin
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore the invalid input
+            column = -1; // Set column to an invalid value to trigger the loop again
+        }
+        
+        
+        }
 
     while(column>=board_col||column<0);
 
@@ -488,12 +510,12 @@ int main() {// integration
         print_board(connected_stones);
 
         vector<int>stone_position= prompt_stone_position(row,col);// get the user selected stone position 
-        cout<<"testing prompt stone no problem"<<"\n";
+    
         int stone_type= arr[stone_position[1]][stone_position[0]];// determine the stone type 
-        cout<<"test stone type"<<"\n";
+
 
         int connections=move_stones(stone_position[1],stone_position[0]);// going to continue prompting user for the move until a stone which is not the same type is connected 
-        cout<<"testing move stone"<<"\n";
+    
         // remove the connected stone
         // regenerate a new baod 
 
