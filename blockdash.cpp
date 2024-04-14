@@ -349,10 +349,10 @@ void moveMap(array<string, MapHeight> &mapData, int terminalWidth, int startPoin
 
 int main()
 {
-    srand(static_cast<unsigned int>(time(nullptr)));           // random number
-    int randomNumber = (rand() % 5) + 1;                       // limit the range of number to 1-5
-    string fileName = to_string(randomNumber) + ".txt";        // random the map file to be opened
-    array<string, MapHeight> mapData = createArrMap(fileName); // store the desired map in the array, ready for further operation
+    srand(static_cast<unsigned int>(time(nullptr)));                           // random number
+    int randomNumber = (rand() % 5) + 1;                                       // limit the range of number to 1-5
+    string fileName = "/blockdashMap/" + to_string(randomNumber) + ".txt";     // random the map file to be opened
+    array<string, MapHeight> mapData = createArrMap(fileName);                 // store the desired map in the array, ready for further operation
 
     const int MapWidth = getMapWidth(mapData);
     int terminalWidth = getTerminalWidth();
