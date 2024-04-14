@@ -132,15 +132,16 @@ void printMap(array<string, MapHeight> mapData, int terminalWidth, int startPoin
             line = string(terminalWidth, ' ');
         }
 
+        // update the portion of the map that will be printed
+        mapPortion[time] = line; 
+        time++;
+
         // add player if that row is the one containting player
         if (row.compare(mapData[playerY]) == 0) 
         {
             addPlayer(line, playerX);
         }
-
-        // update the portion of the map that will be printed
-        mapPortion[time] = line; 
-        time++;
+        
         // Reset terminal cursor to the beginning of the line
         cout << "\r"; 
 
