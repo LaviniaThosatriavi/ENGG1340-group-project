@@ -10,5 +10,7 @@ std::array<std::string, MapHeight> createArrMap(const std::string& fileName);
 int getMapWidth(const std::array<std::string, MapHeight>& mapData);
 int getTerminalWidth();
 void moveMap(std::array<std::string, MapHeight>& mapData, int terminalWidth, int startPoint, int MapWidth, int playerX, int playerY);
+bool blockDashMain();
+
 
 #endif // BLOCKDASH_H
