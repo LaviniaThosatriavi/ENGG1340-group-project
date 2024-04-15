@@ -494,7 +494,7 @@ bool prompt_quit(){
 }
 
 
-int main() {// integration 
+bool rotatingStoneMain() {// integration 
     int default_ph=100;
     int default_mh=100;
     create_board();
@@ -503,6 +503,7 @@ int main() {// integration
     updatestatus(last_game_status);// to update the current player health and monster health and board 
     // first read from the file to get the data from the last game 
     // Second we update the value of the player health , monster health and board from the last game
+    
     while(true){
         print_instructions();
         
@@ -578,6 +579,11 @@ int main() {// integration
             break;
         }
         }
+    if (playerHealth == 0) {
+        return false;
+    } else {
+        return true; 
     }
+}
 
 

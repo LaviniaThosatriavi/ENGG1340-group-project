@@ -348,7 +348,7 @@ void moveMap(array<string, MapHeight> &mapData, int terminalWidth, int startPoin
     }
 }
 
-int main()
+bool blockDashMain()
 {
     srand(static_cast<unsigned int>(time(nullptr)));                      // random number
     int randomNumber = (rand() % 9) + 1;                                  // limit the range of number to 1-5
@@ -370,5 +370,7 @@ int main()
     // operating the games
     moveMap(mapData, terminalWidth, startPoint, MapWidth, playerX, playerY);
 
-    return 0;
+    return win; 
 }
+
+
