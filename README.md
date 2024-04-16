@@ -5,24 +5,6 @@
 git clone https://github.com/tracy308/ENGG1340-group-project.git
 ```
 
-## Update Files
-``` bash
-git pull 
-# pull from the main branch to update any file changes from other people
-
-git add -A
-# add files to commit
-
-git status
-# to see which file are modified/created
-
-git commit -m "<short summary of what you did>"
-# write a short message, usually starting with fix: (fix bug), feat: (feature), etc.
-
-git push
-# push your changes to the branch
-```
-
 ## STAGE 1: Rotating Stones
 In rotating stones, your goal is to kill the monster. The player has to connect stones of different types to defeat the monster. However, each round the monster will also attack the player, decreasing the player's health. When the player's health reaches 0, the player loses the game. On the contrary, if the monster's health drops to 0 or below, the player wins the stage.
 
