@@ -378,7 +378,6 @@ bool blockDashMain()
 
     // operating the games
     moveMap(mapData, terminalWidth, startPoint, MapWidth, playerX, playerY);
-    endwin();
 
     return win;
 }
