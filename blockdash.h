@@ -14,5 +14,6 @@ bool blockDashMain();
 void winScreen(int terminalWidth);
 void loseScreen(int terminalWidth);
 void sleep(int t);
+void clearScreen();
 
 #endif // BLOCKDASH_H
