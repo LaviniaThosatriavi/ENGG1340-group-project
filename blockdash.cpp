@@ -3,7 +3,6 @@
 #include <array>
 #include <thread>
 #include <chrono>
-#include <sys/ioctl.h>
 #include <fstream>
 #include <sstream>
 #include <ctime>
@@ -13,7 +12,9 @@ using namespace std;
 
 #ifdef _WIN32
 #include <windows.h> // for Windows Operating System
+#include <conio.h>
 #else
+#include <sys/ioctl.h>
 #include <unistd.h> // for Unix-like System
 #endif
 
@@ -71,13 +72,27 @@ int getMapWidth(const array<string, MapHeight> &mapData)
 // find the terminal width of the laptop being used
 int getTerminalWidth()
 {
-    struct winsize size;
+    #ifdef _WIN32
+        // Windows specific code
+        CONSOLE_SCREEN_BUFFER_INFO csbi;
+        int columns;
 
-    // Get the size of the terminal window using ioctl system call
-    ioctl(STDOUT_FILENO, TIOCGWINSZ, &size);
-    int terminalWidth = size.ws_col;
+        if (!GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi)){
+            cerr << "GetConsoleScreenBuferInfo failed" << endl;
+            return -1;
+        }
+        columns = csbi.sr.Window.Right - csbi.srWindow.Left + 1;
+        return columns;
 
-    return terminalWidth;
+    #else
+        struct winsize size;
+
+        // Get the size of the terminal window using ioctl system call
+        ioctl(STDOUT_FILENO, TIOCGWINSZ, &size);
+        int terminalWidth = size.ws_col;
+
+        return terminalWidth;
+    #endif
 }
 
 // add the player character 'P' to the correct line of the map to be printed
@@ -181,7 +196,7 @@ void winScreen(int terminalWidth)
 {
     ifstream fin;
     // open the win design page
-    fin.open("blockdashScreen/win.txt");
+    fin.open("win.txt");
     string line;
 
     // store each line of the file to variable line
@@ -221,7 +236,7 @@ void loseScreen(int terminalWidth)
     ifstream fin;
 
     // open the lose design page
-    fin.open("blockdashScreen/lose.txt");
+    fin.open("lose.txt");
     string line;
 
     // store each line of the file to variable line
@@ -257,9 +272,12 @@ void loseScreen(int terminalWidth)
 // check if space bar is pressed = the command for player to go up
 bool isSpaceBarPressed()
 {
-
-    int ch = getch(); // read a character from the keyboard
-
+    #ifdef _WIN32
+    int ch = _getch(); // read a character from the keyboard
+    #else 
+    int ch = getch();
+    #endif
+    
     // return true if space bar is pressed on the keyboard
     if (ch == ' ')
     {
@@ -370,5 +388,7 @@ bool blockDashMain()
     // operating the games
     moveMap(mapData, terminalWidth, startPoint, MapWidth, playerX, playerY);
 
-    return win;
+    return win; 
 }
+
+
