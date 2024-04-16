@@ -1,18 +1,19 @@
 CC = g++
-CFLAGS = -pedantic-errors -std=c++11
-LIBS = -lncurses
+CFLAGS = -std=c++11 -Wall
 
-SRCS = main.cpp rotatingstone.cpp blockdash.cpp encryption.cpp
-OBJS = $(SRCS:.cpp=.o)
-EXECUTABLE = main
+TARGET = rs
+SOURCES = rotatingstone.cpp
+OBJECTS = $(SOURCES:.cpp=.o)
 
-all: $(EXECUTABLE)
+.PHONY: all clean
 
-$(EXECUTABLE): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(EXECUTABLE)
+all: $(TARGET)
+
+$(TARGET): $(OBJECTS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJECTS)
 
 .cpp.o:
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJS) $(EXECUTABLE)
+	rm -f $(OBJECTS) $(TARGET)
