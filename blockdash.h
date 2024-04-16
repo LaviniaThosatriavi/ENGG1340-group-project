@@ -13,5 +13,6 @@ void moveMap(std::array<std::string, MapHeight> &mapData, int terminalWidth, int
 bool blockDashMain();
 void winScreen(int terminalWidth);
 void loseScreen(int terminalWidth);
+void sleep(int t);
 
 #endif // BLOCKDASH_H

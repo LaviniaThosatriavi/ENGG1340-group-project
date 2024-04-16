@@ -73,27 +73,28 @@ int getMapWidth(const array<string, MapHeight> &mapData)
 // find the terminal width of the laptop being used
 int getTerminalWidth()
 {
-    #ifdef _WIN32
-        // Windows specific code
-        CONSOLE_SCREEN_BUFFER_INFO csbi;
-        int columns;
+#ifdef _WIN32
+    // Windows specific code
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    int columns;
 
-        if (!GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi)){
-            cerr << "GetConsoleScreenBuferInfo failed" << endl;
-            return -1;
-        }
-        columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;
-        return columns;
+    if (!GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi))
+    {
+        cerr << "GetConsoleScreenBuferInfo failed" << endl;
+        return -1;
+    }
+    columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+    return columns;
 
-    #else
-        struct winsize size;
+#else
+    struct winsize size;
 
-        // Get the size of the terminal window using ioctl system call
-        ioctl(STDOUT_FILENO, TIOCGWINSZ, &size);
-        int terminalWidth = size.ws_col;
+    // Get the size of the terminal window using ioctl system call
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &size);
+    int terminalWidth = size.ws_col;
 
-        return terminalWidth;
-    #endif
+    return terminalWidth;
+#endif
 }
 
 // add the player character 'P' to the correct line of the map to be printed
@@ -195,9 +196,10 @@ void printMap(array<string, MapHeight> mapData, int terminalWidth, int startPoin
 // print the win screen from text file called "win.txt"
 void winScreen(int terminalWidth)
 {
+    clearScreen();
     ifstream fin;
     // open the win design page
-    fin.open("win.txt");
+    fin.open("blockdashScreen/win.txt");
     string line;
 
     // store each line of the file to variable line
@@ -233,11 +235,11 @@ void winScreen(int terminalWidth)
 // print the game over screen from text file called "lose.txt"
 void loseScreen(int terminalWidth)
 {
-
+    clearScreen();
     ifstream fin;
 
     // open the lose design page
-    fin.open("lose.txt");
+    fin.open("blockdashScreen/lose.txt");
     string line;
 
     // store each line of the file to variable line
@@ -273,12 +275,12 @@ void loseScreen(int terminalWidth)
 // check if space bar is pressed = the command for player to go up
 bool isSpaceBarPressed()
 {
-    #ifdef _WIN32
+#ifdef _WIN32
     int ch = _getch(); // read a character from the keyboard
-    #else 
+#else
     int ch = getch();
-    #endif
-    
+#endif
+
     // return true if space bar is pressed on the keyboard
     if (ch == ' ')
     {
@@ -354,17 +356,6 @@ void moveMap(array<string, MapHeight> &mapData, int terminalWidth, int startPoin
     }
 
     clearScreen();
-
-    // if the player reaches the end point of the whole map, print win screen to congratulate them
-    if (win)
-    {
-        winScreen(terminalWidth);
-    }
-    // if the player loses, print lose screen to tell them that the game is over
-    else
-    {
-        loseScreen(terminalWidth);
-    }
 }
 
 bool blockDashMain()
@@ -390,7 +381,5 @@ bool blockDashMain()
     moveMap(mapData, terminalWidth, startPoint, MapWidth, playerX, playerY);
     endwin();
 
-    return win; 
+    return win;
 }
-
-
