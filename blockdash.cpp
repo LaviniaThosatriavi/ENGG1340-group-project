@@ -12,7 +12,7 @@ using namespace std;
 #ifdef _WIN32
 #include <windows.h> // for Windows Operating System
 #include <conio.h>
-#include <curses.h>
+#include "./PDcurses/curses.h"
 #else
 #include <sys/ioctl.h>
 #include <ncurses.h>
