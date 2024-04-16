@@ -574,12 +574,12 @@ bool rotatingStoneMain() {// integration
                 for (int j=0;j<col;j++){
                     stat.board[i][j]=arr[i][j];
             } 
-        }
+        } 
             writeStructToFile(stat,status_file);
             break;
         }
         }
-    if (playerHealth == 0) {
+    if (playerHealth <= 0) {
         return false;
     } else {
         return true; 
