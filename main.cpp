@@ -74,32 +74,37 @@ int main()
 
     cin >> a;
 
+    int terminalWidth = getTerminalWidth();
     player = blockDashMain();
     // first game
 
     while (!player && tries < 3)
     {
+        loseScreen(terminalWidth);
+        cout << "\r";
         cout << "You have failed helping Prince Alexander to rescue the princess, enter a to try again!\n";
         cin >> a;
         player = blockDashMain();
         tries += 1;
     }
-    
-    system("reset");
 
     if (tries == 3)
     {
+        loseScreen(terminalWidth);
+        cout << "\r";
         cout << "You have failed to rescue the Princess!\n";
         cout << "\n";
-        cout << "GAME OVER\n";
         return 0;
+        system("reset");
     }
 
     tries = 1;
 
+    cout << "\r";
     cout << "Brilliant! You have successfully helped Prince Alexander to kill the first monster. Here is the first riddle for the magical key: ";
     cout << red << firstRiddle << reset << "\n";
     cout << "\n";
+    cout << "\r";
     cout << "But the prince's quest was not yet complete. He still had to face the serpent Viper. Get ready!\n";
 
     player = rotatingStoneMain();
@@ -107,6 +112,8 @@ int main()
 
     while (!player && tries < 3)
     {
+        loseScreen(terminalWidth);
+        cout << "\r";
         cout << "You have failed helping Prince Alexander to rescue the princess, enter a to try again!\n";
         cin >> a;
         player = rotatingStoneMain();
@@ -115,17 +122,21 @@ int main()
 
     if (tries == 3)
     {
+        loseScreen(terminalWidth);
+        cout << "\r";
         cout << "You have failed to rescue the Princess!\n";
         cout << "\n";
-        system("reset");
         return 0;
+        system("reset");
     }
 
     tries = 0;
 
+    cout << "\r";
     cout << "You have helped the Prince killed the second monster! Here is the second riddle for the magical key: ";
     cout << red << secondRiddle << reset << "\n";
     cout << "\n";
+    cout << "\r";
     cout << "With both riddle obtained, guess code for the magical code to unlock the invincible cage by decrypting the message! You have three tries.\n";
 
     encryptionMain(key);
@@ -138,15 +149,17 @@ int main()
         {
             // check if all tries have been used
 
+            loseScreen(terminalWidth);
+            cout << "\r";
             cout << "You have failed to rescue the Princess!\n";
             cout << "\n";
-            cout << "GAME OVER\n";
             return 0;
         }
         else if (playerKey == key)
         {
             // if the user enter the correct key
 
+            cout << "\r";
             cout << "You have successfully find the key, please enter the decrypted message: \n";
             cin >> playerDecryption;
             // the user will need to decrypt the message
@@ -154,34 +167,34 @@ int main()
             if (playerDecryption == decryptedMessage)
             {
                 // if the decrypted message is correct the user win and the loop will be ended
-
+                cout << "\r";
                 cout << "You have successfully find the key and decrypted the message! \n";
                 keyGuess = true;
             }
             else
             {
                 // if the decrypted message is wrong the user will still need to try again
-
+                cout << "\r";
                 cout << "You got the decrypted message wrong, almost there! \n";
                 tries += 1;
             }
         }
         else
         {
-
+            cout << "\r";
             cout << "Not quite, try again!\n";
             tries += 1;
         }
     }
 
     cout << "\n";
-
+    cout << "\r";
     cout << "With both monsters defeated, Prince Alexander found Princess Sofia and freed her from her captivity. She was overjoyed to be rescued, and they returned to Aragonia together, where they were greeted with cheers and celebration.\n";
-
+    cout << "\r";
     cout << "\n";
-
+    cout << "\r";
     cout << "Prince Alexander was hailed as a hero, and Princess Sofia fell in love with him. They were married in a grand ceremony, and they ruled the kingdom together with wisdom and kindness. And the people of Aragonia lived in peace and prosperity, knowing that their princess was safe and that they had a brave prince to protect them.\n";
-
+    cout << "\r";
     cout << "\n";
 
     cout << "GAME OVER\n";
