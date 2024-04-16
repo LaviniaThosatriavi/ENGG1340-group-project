@@ -52,25 +52,25 @@ int main()
     secondRiddle = keyRiddles[keyIndex][2];
     // determine which riddles to display when guessing the key
 
-    cout << "\n";
+    clearScreen();
     cout << "\r";
     cout << "Once upon a time, in the kingdom of Aragonia, there lived a beautiful princess named Sofia. She had long, flowing hair as black as night, and her eyes shone like the brightest stars in the sky. She was kind, gentle, and loved by all who knew her.\n";
-    cout << endl;
-    cout << "\r";
+    cout << endl
+         << "\r";
     cout << "One day, a wicked sorcerer named Zoltar came to Aragonia, seeking to take over the kingdom and enslave its people. He sent two of his most fearsome monsters to kidnap the princess and clocked her in a invincible cage which can only be unlocked with a magical key.\n";
-    cout << endl;
-    cout << "\r";
+    cout << endl
+         << "\r";
     cout << "When Princess Sofia was taken, the people of Aragonia were filled with despair. They knew that only a brave and courageous prince could save her. So, they sent out a call for a hero to come forth and rescue the princess.\n";
-    cout << endl;
-    cout << "\r";
+    cout << endl
+         << "\r";
     cout << "Prince Alexander, a valiant knight, answered the call. He was determined to save Princess Sofia, no matter what dangers lay ahead. Armed with his sword, shield, and courage, he set out to face the monsters, find the magical key and bring the princess back to her kingdom.\n";
-    cout << endl;
-    cout << "\r";
+    cout << endl
+         << "\r";
 
     cout << "As he made his way through the dark forest, he came upon the dragon Pyro. Help Prince Alexander kill the dragon by finishing the first game! You have three tries.\n";
-    cout << "\n";
-    cout << "\r";
-    cout << "Enter a to continue\n";
+    cout << endl
+         << "\r";
+    cout << "Enter 'a' to continue\n";
 
     cin >> a;
 
@@ -81,8 +81,9 @@ int main()
     while (!player && tries < 3)
     {
         loseScreen(terminalWidth);
-        cout << "\r";
-        cout << "You have failed helping Prince Alexander to rescue the princess, enter a to try again!\n";
+        cout << endl
+             << "\r";
+        cout << "You have failed helping Prince Alexander to rescue the princess, enter 'a' to try again!\n";
         cin >> a;
         player = blockDashMain();
         tries += 1;
@@ -91,24 +92,28 @@ int main()
     if (tries == 3)
     {
         loseScreen(terminalWidth);
-        cout << "\r";
+        cout << endl
+             << "\r";
         cout << "You have failed to rescue the Princess!\n";
-        cout << "\n";
+        cout << endl
+             << "\r";
         return 0;
         system("reset");
     }
 
     tries = 1;
 
-    cout << "\r";
+    cout << endl
+         << "\r";
     winScreen(terminalWidth);
     sleep(2000);
     clearScreen();
-    cout << "\r";
+    cout << endl
+         << "\r";
     cout << "Brilliant! You have successfully helped Prince Alexander to kill the first monster. Here is the first riddle for the magical key: ";
-    cout << red << firstRiddle << reset << "\n";
-    cout << "\n";
-    cout << "\r";
+    cout << red << firstRiddle << reset;
+    cout << endl
+         << "\r";
     cout << "But the prince's quest was not yet complete. He still had to face the serpent Viper. Get ready!\n";
 
     player = rotatingStoneMain();
@@ -117,8 +122,9 @@ int main()
     while (!player && tries < 3)
     {
         loseScreen(terminalWidth);
-        cout << "\r";
-        cout << "You have failed helping Prince Alexander to rescue the princess, enter a to try again!\n";
+        cout << endl
+             << "\r";
+        cout << "You have failed helping Prince Alexander to rescue the princess, enter 'a' to try again!\n";
         cin >> a;
         player = rotatingStoneMain();
         tries += 1;
@@ -127,24 +133,28 @@ int main()
     if (tries == 3)
     {
         loseScreen(terminalWidth);
-        cout << "\r";
+        cout << endl
+             << "\r";
         cout << "You have failed to rescue the Princess!\n";
-        cout << "\n";
+        cout << endl
+             << "\r";
         return 0;
         system("reset");
     }
 
     tries = 0;
 
-    cout << "\r";
+    cout << endl
+         << "\r";
     winScreen(terminalWidth);
     sleep(2000);
     clearScreen();
-    cout << "\r";
+    cout << endl
+         << "\r";
     cout << "You have helped the Prince killed the second monster! Here is the second riddle for the magical key: ";
     cout << red << secondRiddle << reset << "\n";
-    cout << "\n";
-    cout << "\r";
+    cout << endl
+         << "\r";
     cout << "With both riddle obtained, guess code for the magical code to unlock the invincible cage by decrypting the message! You have three tries.\n";
 
     encryptionMain(key);
@@ -158,16 +168,19 @@ int main()
             // check if all tries have been used
 
             loseScreen(terminalWidth);
-            cout << "\r";
+            cout << endl
+                 << "\r";
             cout << "You have failed to rescue the Princess!\n";
-            cout << "\n";
+            cout << endl
+                 << "\r";
             return 0;
         }
         else if (playerKey == key)
         {
             // if the user enter the correct key
 
-            cout << "\r";
+            cout << endl
+                 << "\r";
             cout << "You have successfully find the key, please enter the decrypted message: \n";
             cin >> playerDecryption;
             // the user will need to decrypt the message
@@ -175,35 +188,37 @@ int main()
             if (playerDecryption == decryptedMessage)
             {
                 // if the decrypted message is correct the user win and the loop will be ended
-                cout << "\r";
+                cout << endl
+                     << "\r";
                 cout << "You have successfully find the key and decrypted the message! \n";
                 keyGuess = true;
             }
             else
             {
                 // if the decrypted message is wrong the user will still need to try again
-                cout << "\r";
+                cout << endl
+                     << "\r";
                 cout << "You got the decrypted message wrong, almost there! \n";
                 tries += 1;
             }
         }
         else
         {
-            cout << "\r";
+            cout << endl
+                 << "\r";
             cout << "Not quite, try again!\n";
             tries += 1;
         }
     }
 
-    cout << "\n";
-    cout << "\r";
+    cout << endl
+         << "\r";
     cout << "With both monsters defeated, Prince Alexander found Princess Sofia and freed her from her captivity. She was overjoyed to be rescued, and they returned to Aragonia together, where they were greeted with cheers and celebration.\n";
-    cout << "\r";
-    cout << "\n";
-    cout << "\r";
+    cout << endl
+         << "\r";
     cout << "Prince Alexander was hailed as a hero, and Princess Sofia fell in love with him. They were married in a grand ceremony, and they ruled the kingdom together with wisdom and kindness. And the people of Aragonia lived in peace and prosperity, knowing that their princess was safe and that they had a brave prince to protect them.\n";
-    cout << "\r";
-    cout << "\n";
+    cout << endl
+         << "\r";
 
     cout << "GAME OVER\n";
 }

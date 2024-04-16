@@ -331,6 +331,12 @@ void moveMap(array<string, MapHeight> &mapData, int terminalWidth, int startPoin
         clearScreen();
         printMap(mapData, terminalWidth, startPoint, MapWidth, playerX, playerY);
 
+        if (checkCollision(MapWidth, playerX, playerY))
+        {
+            // if the player collides with the obstacle, calling game over
+            win = false;
+            break;
+        }
         // if the going up command is called
         if (isSpaceBarPressed())
         {
@@ -341,13 +347,6 @@ void moveMap(array<string, MapHeight> &mapData, int terminalWidth, int startPoin
         {
             // serving as gravity that will make player gradually fall down
             playerY++;
-        }
-
-        if (checkCollision(MapWidth, playerX, playerY))
-        {
-            // if the player collides with the obstacle, calling game over
-            win = false;
-            break;
         }
 
         startPoint++;
