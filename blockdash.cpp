@@ -181,7 +181,7 @@ void winScreen(int terminalWidth)
 {
     ifstream fin;
     // open the win design page
-    fin.open("win.txt");
+    fin.open("blockdashScreen/win.txt");
     string line;
 
     // store each line of the file to variable line
@@ -221,7 +221,7 @@ void loseScreen(int terminalWidth)
     ifstream fin;
 
     // open the lose design page
-    fin.open("lose.txt");
+    fin.open("blockdashScreen/lose.txt");
     string line;
 
     // store each line of the file to variable line
@@ -370,5 +370,5 @@ bool blockDashMain()
     // operating the games
     moveMap(mapData, terminalWidth, startPoint, MapWidth, playerX, playerY);
 
-    return win; 
+    return win;
 }
