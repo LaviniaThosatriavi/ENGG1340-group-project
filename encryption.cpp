@@ -5,6 +5,20 @@
 #include <vector>
 using namespace std; 
 
+
+string generateRandomKey() {
+
+    srand(static_cast<unsigned int>(time(nullptr)));
+    //seed the random number generator
+
+    vector<string> keys = {"chocolates", "adventures", "reflection", "autombiles"};
+
+    int randomIndex = rand() % 4;
+    string randomKey = keys[randomIndex];
+    //give random key everytime
+
+    return randomKey; 
+}
 string generateRandomString(int length) {
 //function for generating random string with size length 
 
@@ -50,8 +64,6 @@ string encryption(string key) {
 
     string cipher; 
     //initalize cipher; 
-
-    cout << "This is the plainText: " << generateRandomString(10) << "\n";
 
     for (int i = 0; i < plainText.size(); i++) {
     //iterate through each character of the plaintext and key
@@ -99,71 +111,85 @@ string encryption(string key) {
 
     }
 
-    cout << "This is Cipher: " << cipher << "\n";
-
-    return cipher; 
+   return cipher;
 
 }
 
-void decryption(string key, string cipher) {
+string decryption(string key, string cipher) {
+
     string plainText;
+    //initalize plainText
 
     for (int i = 0; i < cipher.size(); i++) {
+
         string plainBinary;
+        //initalize binary value for the plainText
 
         int cipherAsciiValue = static_cast<int>(cipher[i]);
+        //convert character of cipher into its corresponding ASCII value
+
         int asciiOffset = islower(cipherAsciiValue) ? 'a' : 'A';
+        //determine whether that particular character is in upper or lower case 
 
         string cipherBinary = bitset<8>(cipherAsciiValue - asciiOffset).to_string();
+        //convert ASCII value into binary 
 
         int keyAsciiValue = static_cast<int>(key[i]);
+        //convert character of key into its corresponding ASCII value
+
         string keyBinary = bitset<8>(keyAsciiValue - asciiOffset).to_string();
+        //convert ASCII value of the character of the key into binary 
 
         for (int j = 0; j < cipherBinary.size(); j++) {
+
             int cipherBinaryInt = static_cast<int>(cipherBinary[j]) - '0';
             int keyBinaryInt = static_cast<int>(keyBinary[j]) - '0';
 
             int result = cipherBinaryInt ^ keyBinaryInt;
+            //perform XOR operation 
+
             string resultString = to_string(result);
 
             plainBinary = plainBinary + resultString;
+            //add the computed result to the plainTetxt
+   
         }
 
-        int plainAscii = std::stoi(plainBinary, nullptr, 2);
+        int plainAscii = stoi(plainBinary, nullptr, 2);
+        //convert the binary value of the characters of the plaintext into ASCII values
+
         char plainCharacter = static_cast<char>(plainAscii + asciiOffset);
+        //convert the ASCII values of the plainText into its corresponding characters
 
         plainText += plainCharacter;
     }
 
-    // Flip the case of the first character in the plainText
     if (islower(plainText[0])) {
         plainText[0] = toupper(plainText[0]);
     } else {
         plainText[0] = tolower(plainText[0]);
     }
+    // Flip the case of the first character in the plainText
 
-    cout << "This is the plainText: " << plainText << "\n";
+    return plainText;
 }
 
 
 
-int main() {
+void encryptionMain(string randomKey) {
+
+    string blue = "\033[34m";
+    // ANSI escape code for blue text
+
+    string reset = "\033[0m";
+    // ANSI escape code for resetting text color
 
     string cipher; 
 
-    srand(static_cast<unsigned int>(time(nullptr)));
-    //seed the random number generator
+    cipher = encryption(randomKey);
 
-    vector<string> keys = {"Remarkable", "Innovation", "Technology", "Beneficial", "Continuous", "Intriguing", "Repertoire", "Delectable", "Sufficient", "Vocabulary"};
-
-    int randomIndex = rand() % keys.size();
-    string randomKey = keys[randomIndex];
-    //give random key everytime
-
-    cout << "This is the random key: " << randomKey << "\n";
-
-    cipher = encryption(randomKey); 
-
-    decryption(randomKey, cipher);
+    cout << "This is the message: "; 
+    cout << blue << cipher << reset;
+    cout << " Guess the key and decrypt the message!" << "\n";
 
 }
