@@ -206,26 +206,23 @@ vector<int> prompt_stone_position(int board_row,int board_col){ //henry
     vector<int> position;
     // 2 do while loop to check whether the selected posiiton is on the board 
     do {
-        cout<<"Please select the column of the stone which you would like to connect from: ";
-        cin>>column;
-        if (!(std::cin >> column)) {
-            std::cin.clear(); // Clear the error state of cin
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore the invalid input
+        cout << "Please select the column of the stone which you would like to connect from: ";
+        if (!(cin >> column)) {
+            cin.clear(); // Clear the error state of cin
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore the invalid input
             column = -1; // Set column to an invalid value to trigger the loop again
         }
-        
-        
-        }
-
-    while(column>=board_col||column<0);
-
+    } while (column >= board_col || column < 0);
     position.push_back(column);
 
     do {
-        cout<<"Please select the row of the stone which you would like to connect from: ";
-        cin>>row;}
-    while(row>=board_row||row<0);
-
+        cout << "Please select the row of the stone which you would like to connect from: ";
+        if (!(cin >> row)) {
+            cin.clear(); // Clear the error state of cin
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore the invalid input
+            row = -1; // Set row to an invalid value to trigger the loop again
+        }
+    } while (row >= board_row || row < 0);
     position.push_back(row);
 
 
@@ -485,7 +482,7 @@ bool game_ended(int player_health , int monster_health){
 
 bool prompt_quit(){
     char quit;
-    cout<<"press q to quit or any key to continue the game , ur game status will be saved";
+    cout<<"press q to quit or any key to continue the game , ur game status will be saved: ";
     cin>>quit;
     if (quit=='q'){
         return true;
