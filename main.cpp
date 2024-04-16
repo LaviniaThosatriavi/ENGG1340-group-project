@@ -84,13 +84,14 @@ int main()
         player = blockDashMain();
         tries += 1;
     }
+    
+    system("reset");
 
     if (tries == 3)
     {
         cout << "You have failed to rescue the Princess!\n";
         cout << "\n";
         cout << "GAME OVER\n";
-        system("reset");
         return 0;
     }
 
