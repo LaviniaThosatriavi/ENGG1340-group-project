@@ -115,7 +115,6 @@ int main()
     {
         cout << "You have failed to rescue the Princess!\n";
         cout << "\n";
-        cout << "GAME OVER\n";
         return 0;
     }
 
