@@ -585,5 +585,3 @@ bool rotatingStoneMain() {// integration
         return true; 
     }
 }
-
-
