@@ -6,15 +6,16 @@
 #include <fstream>
 #include <sstream>
 #include <ctime>
-#include <ncurses.h>
 
 using namespace std;
 
 #ifdef _WIN32
 #include <windows.h> // for Windows Operating System
 #include <conio.h>
+#include <curses.h>
 #else
 #include <sys/ioctl.h>
+#include <ncurses.h>
 #include <unistd.h> // for Unix-like System
 #endif
 
@@ -81,7 +82,7 @@ int getTerminalWidth()
             cerr << "GetConsoleScreenBuferInfo failed" << endl;
             return -1;
         }
-        columns = csbi.sr.Window.Right - csbi.srWindow.Left + 1;
+        columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;
         return columns;
 
     #else
@@ -387,6 +388,7 @@ bool blockDashMain()
 
     // operating the games
     moveMap(mapData, terminalWidth, startPoint, MapWidth, playerX, playerY);
+    endwin();
 
     return win; 
 }
