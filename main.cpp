@@ -103,6 +103,7 @@ int main()
     cout << "\r";
     winScreen(terminalWidth);
     sleep(2000);
+    clearScreen();
     cout << "\r";
     cout << "Brilliant! You have successfully helped Prince Alexander to kill the first monster. Here is the first riddle for the magical key: ";
     cout << red << firstRiddle << reset << "\n";
@@ -138,6 +139,7 @@ int main()
     cout << "\r";
     winScreen(terminalWidth);
     sleep(2000);
+    clearScreen();
     cout << "\r";
     cout << "You have helped the Prince killed the second monster! Here is the second riddle for the magical key: ";
     cout << red << secondRiddle << reset << "\n";
