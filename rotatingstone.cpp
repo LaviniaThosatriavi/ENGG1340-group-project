@@ -339,7 +339,7 @@ vector<int> calculate_score_for_each_stone(int stoneType, int numStones){
             break;
         case 4:
         // stone type 4: increase the next attack
-            score = numStones * 3;
+            score = numStones * 5;
             break;
         default:
             // Invalid stone type
