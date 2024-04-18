@@ -11,6 +11,7 @@ using namespace std;
 
 #ifdef _WIN32
 #include <windows.h> // for Windows Operating System
+#undef MOUSE_MOVED
 #include <conio.h>
 #include "./PDcurses/curses.h"
 #else
