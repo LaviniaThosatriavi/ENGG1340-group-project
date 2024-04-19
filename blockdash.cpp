@@ -7,8 +7,6 @@
 #include <sstream>
 #include <ctime>
 
-using namespace std;
-
 #ifdef _WIN32
 #include <windows.h> // for Windows Operating System
 #undef MOUSE_MOVED
@@ -19,6 +17,8 @@ using namespace std;
 #include <ncurses.h>
 #include <unistd.h> // for Unix-like System
 #endif
+
+using namespace std;
 
 const int MapHeight = 17;
 const string BROWN_COLOR = "\033[38;2;139;69;19m"; // Brown color escape code
