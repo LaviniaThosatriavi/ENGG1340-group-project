@@ -3,8 +3,21 @@
 #include <ctime>
 #include <bitset>
 #include <vector>
+#include <cctype>
 using namespace std; 
 
+
+string toLowerCase(const string& str) {
+
+    string lowerCaseStr = str;
+    
+    for (char& c : lowerCaseStr) {
+        c = tolower(c);
+    }
+    
+    return lowerCaseStr;
+}
+//convert to lower case
 
 string generateRandomKey() {
 
@@ -20,49 +33,24 @@ string generateRandomKey() {
     return randomKey; 
 }
 string generateRandomString(int length) {
-//function for generating random string with size length 
 
-    string randomString; 
-    //initalize random string 
-
+    string randomString;
+    
     srand(time(nullptr));
-    //random seed is generated based on current time
-
+    
     for (int i = 0; i < length; i++) {
-
-        int randomType = random() % 2; 
-        //classify upper and lowercase
-
-        if (randomType == 0) {
-        //lowercase character
-
-            char randomChar = rand() % 26 + 97; 
-            //ASCII value for lowercase characters
-
-            randomString += randomChar; 
-
-        } else {
-
-            char randomChar = rand() % 26 + 65; 
-            //ASCII value for uppercase characters; 
-                
-            randomString += randomChar;
-
-        } 
-
+        char randomChar = rand() % 26 + 97;
+        randomString += randomChar;
     }
-
-    return randomString; 
-
+    
+    return randomString;
 }
+//generate a random string
 
 
-string encryption(string key) {
+string encryption(string plainText,string key) {
 
-    string plainText = generateRandomString(10);
-    //import the string from the function generatRandomString as the plainText
-
-    string cipher; 
+    string cipher1; 
     //initalize cipher; 
 
     for (int i = 0; i < plainText.size(); i++) {
@@ -107,17 +95,19 @@ string encryption(string key) {
         char cipherCharacter = static_cast<char>(cipherAscii + asciiOffset); 
         //conver the ascii value of the cipher into character
 
-        cipher += cipherCharacter;
+        cipher1 += cipherCharacter;
 
     }
 
-   return cipher;
+    string cipher2 = toLowerCase(cipher1);
+
+    return cipher2;
 
 }
 
 string decryption(string key, string cipher) {
 
-    string plainText;
+    string plainText1;
     //initalize plainText
 
     for (int i = 0; i < cipher.size(); i++) {
@@ -161,22 +151,24 @@ string decryption(string key, string cipher) {
         char plainCharacter = static_cast<char>(plainAscii + asciiOffset);
         //convert the ASCII values of the plainText into its corresponding characters
 
-        plainText += plainCharacter;
+        plainText1 += plainCharacter;
     }
 
-    if (islower(plainText[0])) {
-        plainText[0] = toupper(plainText[0]);
+    if (islower(plainText1[0])) {
+        plainText1[0] = toupper(plainText1[0]);
     } else {
-        plainText[0] = tolower(plainText[0]);
+        plainText1[0] = tolower(plainText1[0]);
     }
     // Flip the case of the first character in the plainText
 
-    return plainText;
+    string plainText2 = toLowerCase(plainText1);
+
+    return plainText2;
 }
 
 
 
-void encryptionMain(string randomKey) {
+void encryptionMain(string originalText,string randomKey) {
 
     string blue = "\033[34m";
     // ANSI escape code for blue text
@@ -186,7 +178,7 @@ void encryptionMain(string randomKey) {
 
     string cipher; 
 
-    cipher = encryption(randomKey);
+    cipher = encryption(originalText, randomKey);
 
     cout << "This is the message: "; 
     cout << blue << cipher << reset;
