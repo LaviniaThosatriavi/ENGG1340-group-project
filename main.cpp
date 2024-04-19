@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <fstream>
 
 using namespace std;
 
@@ -35,6 +36,10 @@ int main()
      string playerDecryption;
      string firstRiddle;
      string secondRiddle;
+     string currrent_game;
+
+     // create a current game file to store the current game status 
+
 
      for (int i = 0; i < 4; i++)
      {
@@ -51,6 +56,8 @@ int main()
      firstRiddle = keyRiddles[keyIndex][1];
      secondRiddle = keyRiddles[keyIndex][2];
      // determine which riddles to display when guessing the key
+
+     // if current agme ==1
 
      clearScreen();
      cout << "\r";
@@ -73,6 +80,7 @@ int main()
      cout << "Enter 'a' to continue\n";
 
      cin >> a;
+
 
      int terminalWidth = getTerminalWidth();
      player = blockDashMain();
@@ -116,9 +124,10 @@ int main()
           << "\r";
      cout << "But the prince's quest was not yet complete. He still had to face the serpent Viper. Get ready!\n";
 
+
+// if current game==2 
      player = rotatingStoneMain();
      // second game
-
      while (!player && tries < 3)
      {
           loseScreen(terminalWidth);
@@ -138,10 +147,13 @@ int main()
           cout << "You have failed to rescue the Princess!\n";
           cout << endl
                << "\r";
-          return 0;
           system("reset");
+          // reset the current game back to 1 in the current game file
+          return 0;
      }
 
+     
+     // current game == 3 in the current game file 
      tries = 0;
 
      cout << endl

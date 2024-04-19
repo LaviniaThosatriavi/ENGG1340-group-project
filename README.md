@@ -5,16 +5,14 @@
 git clone https://github.com/tracy308/ENGG1340-group-project.git
 ```
 
-## STAGE 1: Rotating Stones
-In rotating stones, your goal is to kill the monster. The player has to connect stones of different types to defeat the monster. However, each round the monster will also attack the player, decreasing the player's health. When the player's health reaches 0, the player loses the game. On the contrary, if the monster's health drops to 0 or below, the player wins the stage.
 
 ## Run File
 ``` bash
 make
-./rs
+./main
 ```
 
-## STAGE 2: Block Dash
+## STAGE 1: Block Dash
 
 In Block Dash, your goal is to guide the player character, represented by the letter 'P', through a series of randomly generated maps. The maps are filled with obstacles represented by brown or red blocks. The player must navigate through the map and reach the bottom without colliding with any obstacles. 
 
@@ -88,3 +86,7 @@ In Block Dash, your goal is to guide the player character, represented by the le
 
 ## Non-standard C/C++ libraries used
 - ncurses.h is used to implement the isSpaceBarPressed function, which allows continuous detection of the space bar without the need to press the enter key. When the space bar is pressed, the player character will move up by two blocks in the game.
+
+
+## STAGE 2: Rotating Stones
+In rotating stones, your goal is to kill the monster. The player has to connect stones of different types to defeat the monster. However, each round the monster will also attack the player, decreasing the player's health. When the player's health reaches 0, the player loses the game. On the contrary, if the monster's health drops to 0 or below, the player wins the stage.

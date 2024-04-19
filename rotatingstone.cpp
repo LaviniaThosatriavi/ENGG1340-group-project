@@ -16,7 +16,7 @@ const string bblue = "\033[1;44m"; // background blue
 const string fblack = "\033[30m"; // foreground magenta
 const string reset = "\033[0m"; // reset color
 int arr[row][col];// it is the board 
-int monsterHealth = 90;
+int monsterHealth = 100;
 const int monsterMaxHealth = 100;
 int playerHealth = 100;
 const int playerMaxHealth = 100;
@@ -545,10 +545,17 @@ bool rotatingStoneMain() {// integration
             for(int i=0;i<row;i++){// set the default value of the board 
                 for (int j=0;j<col;j++){
                     new_game.board[i][j]=arr[i][j];
+                }
             }
-        }
+            cout<< new_game.PlayerH;
+            cout<<new_game.MonsterH;
             writeStructToFile(new_game,status_file);// storing the content into the file so next time the value are fetched will be the default values 
             // set the values in the game status.txt back to defualt values so next time when it is fetched can run it 
+            if (playerHealth <= 0) {
+                return false;
+            } else {
+                return true; 
+            }
         }
 
 
