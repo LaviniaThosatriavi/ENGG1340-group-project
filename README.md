@@ -1,5 +1,8 @@
 # ENGG1340-group-project
 
+## Video Demo
+https://drive.google.com/file/d/1o9HbhruDT0vyrlqAnUnDNvIYtKjX-UDK/view?usp=drivesdk
+
 ## Set Up
 ```bash
 git clone https://github.com/tracy308/ENGG1340-group-project.git
@@ -16,41 +19,10 @@ make
 
 In Block Dash, your goal is to guide the player character, represented by the letter 'P', through a series of randomly generated maps. The maps are filled with obstacles represented by brown or red blocks. The player must navigate through the map and reach the bottom without colliding with any obstacles. 
 
-## Table of Contents
-
-- [Installation](#installation)
-- [Usage](#usage)
 - [Controls](#controls)
 - [Gameplay](#gameplay)
 - [Screenshots](#screenshots)
 - [Features](#features)
-
-## Installation
-
-1. Install the required dependencies:
-   - `ncurses` library from blockdash.cpp
-
-2. Clone the repository:
-
-   ```bash
-   git clone https://github.com/your-username/block-dash.git
-   ```
-
-3. Compile the code:
-
-   ```bash
-   g++ blockdash.cpp -o block-dash -lncurses
-   ```
-
-## Usage
-
-1. Run the game:
-
-   ```bash
-   ./block-dash
-   ```
-
-2. Follow the on-screen instructions to play the game.
 
 ## Controls
 
