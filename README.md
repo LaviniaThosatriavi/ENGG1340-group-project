@@ -57,7 +57,7 @@ In Block Dash, your goal is to guide the player character, represented by the le
   - Win and lose screens read from design files ("win.txt" and "lose.txt" respectively) and printed to adjust to terminal width accordingly.
 
 ## Non-standard C/C++ libraries used
-- ncurses.h is used to implement the isSpaceBarPressed function, which allows continuous detection of the space bar without the need to press the enter key. When the space bar is pressed, the player character will move up by two blocks in the game.
+- ncurses.h / curses.h is used to implement the isSpaceBarPressed function, which allows continuous detection of the space bar without the need to press the enter key. When the space bar is pressed, the player character will move up by two blocks in the game.
 
 
 ## STAGE 2: Rotating Stones
