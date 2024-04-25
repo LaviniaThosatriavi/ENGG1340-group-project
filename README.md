@@ -62,3 +62,6 @@ In Block Dash, your goal is to guide the player character, represented by the le
 
 ## STAGE 2: Rotating Stones
 In rotating stones, your goal is to kill the monster. The player has to connect stones of different types to defeat the monster. However, each round the monster will also attack the player, decreasing the player's health. When the player's health reaches 0, the player loses the game. On the contrary, if the monster's health drops to 0 or below, the player wins the stage.
+
+## STAGE 3: Decryption
+Each stage will generate a riddle. In the final stage, message must be decoded using vernam cipher to win the game!
